@@ -44,7 +44,7 @@ export default class Home extends Component {
                     barTintColor="white"
                     noRenderContent
                 >
-                    {tabBars.map((item, index) => (
+                    {tabBars.map((item) => (
                         <TabBar.Item
                             title={item.title}
                             key={item.path}

@@ -5,12 +5,12 @@ import React, { Component } from 'react'
 import { Button } from 'antd-mobile';
 
 // 导入路由组件
-import { HashRouter as Router, Route, Link } from 'react-router-dom';
+import { HashRouter as Router, Route, Redirect } from 'react-router-dom';
 
 // 引入页面组件
-import  Home from './pages/Home';
+import Home from './pages/Home';
 
-import  CityList from './pages/CityList';
+import CityList from './pages/CityList';
 
 
 export default class App extends Component {
@@ -18,9 +18,12 @@ export default class App extends Component {
     return (
       <Router>
 
-        <Route   path="/home" component={Home}  />
+        {/* 路由重定向 */}
+        <Route path="/" exact render={() => <Redirect to="/home" />} />
 
-        <Route   path="/citylist"  component={ CityList }  />
+        <Route path="/home" component={Home} />
+
+        <Route path="/citylist" component={CityList} />
 
       </Router>
     )
