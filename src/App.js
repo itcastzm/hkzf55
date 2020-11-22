@@ -17,9 +17,8 @@ export default class App extends Component {
   render() {
     return (
       <Router>
-        {/* <Button type="primary">按钮</Button> */}
 
-        <Route   path="/home"  component={Home}  />
+        <Route   path="/home" component={Home}  />
 
         <Route   path="/citylist"  component={ CityList }  />
 
