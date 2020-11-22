@@ -18,6 +18,9 @@ import Profile from '../Profile'
 
 import HouseList from '../HouseList';
 
+// 引入样式
+import './index.css';
+
 export default class Home extends Component {
 
 
@@ -26,43 +29,13 @@ export default class Home extends Component {
         this.state = {
             selectedTab: 'redTab',
             hidden: false,
-            fullScreen: false,
         };
-    }
-
-
-    renderContent(pageText) {
-        return (
-            <div style={{ backgroundColor: 'white', height: '100%', textAlign: 'center' }}>
-                <div style={{ paddingTop: 60 }}>Clicked “{pageText}” tab， show “{pageText}” information</div>
-                <a style={{ display: 'block', marginTop: 40, marginBottom: 20, color: '#108ee9' }}
-                    onClick={(e) => {
-                        e.preventDefault();
-                        this.setState({
-                            hidden: !this.state.hidden,
-                        });
-                    }}
-                >
-                    Click to show/hide tab-bar
-            </a>
-                <a style={{ display: 'block', marginBottom: 600, color: '#108ee9' }}
-                    onClick={(e) => {
-                        e.preventDefault();
-                        this.setState({
-                            fullScreen: !this.state.fullScreen,
-                        });
-                    }}
-                >
-                    Click to switch fullscreen
-            </a>
-            </div>
-        );
     }
 
 
     render() {
         return (
-            <div>
+            <div className="home">
 
                 <Route path="/home" exact component={Index} />
                 <Route path="/home/news" component={News} />
@@ -70,12 +43,13 @@ export default class Home extends Component {
                 <Route path="/home/houselist" component={HouseList} />
 
 
-                <div style={this.state.fullScreen ? { position: 'fixed', height: '100%', width: '100%', top: 0 } : { height: 400 }}>
+               
                     <TabBar
                         unselectedTintColor="#949494"
                         tintColor="#21b97a"
                         barTintColor="white"
                         hidden={this.state.hidden}
+                        noRenderContent
                     >
                         <TabBar.Item
                             title="首页"
@@ -91,7 +65,7 @@ export default class Home extends Component {
                             }}
                             data-seed="logId"
                         >
-                            {this.renderContent('Life')}
+                            
                         </TabBar.Item>
                         <TabBar.Item
                             icon={<i className="iconfont icon-findHouse"></i>}
@@ -107,7 +81,7 @@ export default class Home extends Component {
                             }}
                             data-seed="logId1"
                         >
-                            {this.renderContent('Koubei')}
+                           
                         </TabBar.Item>
                         <TabBar.Item
                             icon={<i className="iconfont  icon-infom"></i>}
@@ -122,10 +96,10 @@ export default class Home extends Component {
                                 });
                             }}
                         >
-                            {this.renderContent('Friend')}
+                           
                         </TabBar.Item>
                         <TabBar.Item
-                            icon={ <i className="iconfont  icon-my"></i>}
+                            icon={<i className="iconfont  icon-my"></i>}
                             selectedIcon={<i className="iconfont  icon-my"></i>}
                             title="我的"
                             key="my"
@@ -136,12 +110,9 @@ export default class Home extends Component {
                                 });
                             }}
                         >
-                            {this.renderContent('My')}
+                           
                         </TabBar.Item>
                     </TabBar>
-                </div>
-
-
             </div>
         )
     }
