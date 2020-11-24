@@ -6,10 +6,14 @@ body {
     background-color: #fff;
 }
 
+#root {
+    height: 100%;
+}
 
 h2,
 h3,
-p {
+p,
+body {
     padding: 0;
     margin: 0;
 }

@@ -10,6 +10,9 @@ import { HashRouter as Router, Route, Redirect, Switch } from 'react-router-dom'
 // 引入页面组件
 import Home from './pages/Home';
 
+// 导入地图找房页面
+import Map from './pages/Map';
+
 import CityList from './pages/CityList';
 
 import NotFound from './pages/NotFound'
@@ -26,6 +29,8 @@ export default class App extends Component {
           <Route path="/home" component={Home} />
 
           <Route path="/citylist" component={CityList} />
+
+          <Route path="/map" component={Map} />
 
           <Route path="*" component={NotFound} />
 
