@@ -5,6 +5,60 @@
     /* 轮播图区域 */
     .swipers {
         height: 212px;
+        position: relative;
+
+        .search-box {
+            position: absolute;
+            top: 45px;
+            width: 100%;
+            padding: 0 10px;
+
+            .search {
+                flex: 1;
+
+                height: 34px;
+                margin: 0 10px;
+                padding: 5px 5px 5px 8px;
+                border-radius: 3px;
+                background-color: #fff;
+
+                .location {
+                    .icon-arrow {
+                        margin-left: 2px;
+                        font-size: 12px;
+                        color: #7f7f80;
+                    }
+                }
+
+                .form {
+                    border-left: solid 1px #e5e5e5;
+                    margin-left: 12px;
+                    line-height: 16px;
+
+                    .icon-seach {
+                        vertical-align: middle;
+                        padding: 0 2px 0 12px;
+                        color: #9c9fa1;
+                        font-size: 15px;
+                    }
+
+                    span {
+                        padding-left: 4px;
+                        font-size: 13px;
+                        color: #9c9fa1;
+                    }
+                }
+            }
+
+            .icon-map {
+                font-size: 25px;
+                color: #fff;
+            }
+
+        }
+
+
+
     }
 
     /* 导航区 */
@@ -112,7 +166,6 @@
         // 最新资讯
         .news-item {
             height: 120px;
-
             border-bottom: 1px solid #e5e5e5;
 
             .img-wrap {
@@ -134,9 +187,6 @@
                     padding: 0;
                 }
 
-                .info {
-                    width: 100%;
-                }
             }
         }
     }

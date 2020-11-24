@@ -124,14 +124,13 @@ export default class Index extends Component {
                 <div className="img-wrap">
                     <img src={`http://localhost:8080${item.imgSrc}`} alt="" />
                 </div>
-                <Flex className="desc" justify="between" direction="column">
+                <Flex className="desc" justify="between" direction="column" align="stretch">
                     <h3> {item.title}</h3>
-                    <Flex justify="between" className="info" >
+                    <Flex justify="between" >
                         <span>{item.from}</span>
                         <span>{item.date}</span>
                     </Flex>
                 </Flex>
-
             </Flex>
         )
     }
@@ -142,7 +141,23 @@ export default class Index extends Component {
 
                 {/* 轮播图区域 */}
                 <div className="swipers">
+
                     {this.renderSwipers()}
+
+                    <Flex className="search-box">
+                        <Flex className="search">
+                            <div className="location">
+                                广州
+                                <i className="iconfont icon-arrow"></i>
+                            </div>
+                            <div className="form">
+                                <i className="iconfont icon-seach"></i>
+                                <span>请输入小区或地址</span>
+                            </div>
+                        </Flex>
+                        <i className="iconfont  icon-map"></i>
+                    </Flex>
+
                 </div>
 
                 {/* 导航 */}
@@ -178,10 +193,7 @@ export default class Index extends Component {
                             renderItem={this.renderNewItem}
                         />
                     </WingBlank>
-
                 </div>
-
-
             </div>
         )
     }
