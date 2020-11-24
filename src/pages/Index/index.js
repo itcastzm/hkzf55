@@ -1,40 +1,46 @@
 import React, { Component } from 'react'
 import { Carousel, WingBlank } from 'antd-mobile';
 
+import axios from 'axios';
+
 
 export default class Index extends Component {
 
     state = {
-        data: ['1', '2', '3'],
-        imgHeight: 176,
+        swipers: [],
+        imgHeight: 212,
     }
 
     componentDidMount() {
-        // simulate img loading
-        setTimeout(() => {
-            this.setState({
-                data: ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI'],
-            });
-        }, 100);
+        this.getSwipers();
+    }
+
+    async getSwipers() {
+        const res = await axios.get(`http://localhost:8080/home/swiper`);
+
+        this.setState({
+            swipers: res.data.body
+        });
     }
 
     render() {
         return (
             <div>
-                <Carousel
+
+
+                {this.state.swipers.length ? <Carousel
                     autoplay={true}
                     infinite
-                    beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
-                    afterChange={index => console.log('slide to', index)}
+                    autoplayInterval={1000}
                 >
-                    {this.state.data.map(val => (
+                    {this.state.swipers.map(val => (
                         <a
-                            key={val}
+                            key={val.id}
                             href="http://www.itcast.cn"
                             style={{ display: 'inline-block', width: '100%', height: this.state.imgHeight }}
                         >
                             <img
-                                src={`https://zos.alipayobjects.com/rmsportal/${val}.png`}
+                                src={`http://localhost:8080${val.imgSrc}`}
                                 alt=""
                                 style={{ width: '100%', verticalAlign: 'top' }}
                                 onLoad={() => {
@@ -45,7 +51,8 @@ export default class Index extends Component {
                             />
                         </a>
                     ))}
-                </Carousel>
+                </Carousel> : null}
+
             </div>
         )
     }
