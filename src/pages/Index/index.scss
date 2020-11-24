@@ -1,0 +1,31 @@
+// sass 跟 less  差不多用法
+
+.index {
+
+    /* 轮播图区域 */
+    .swipers {
+        height: 212px;
+    }
+
+    /* 导航区 */
+    .nav {
+        padding: 10px 0;
+
+        .am-flexbox-item {
+            text-align: center;
+
+            img {
+                width: 48px;
+            }
+
+            h2 {
+                margin-top: 7px;
+                font-size: 13px;
+                font-weight: normal;
+            }
+
+        }
+
+    }
+
+}
