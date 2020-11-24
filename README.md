@@ -13,7 +13,7 @@
 
 2.  UI框架
 
-   1. ant-mobile  https://mobile.ant.design/docs/react/introduce-cn
+   1. antd-mobile  https://mobile.ant.design/docs/react/introduce-cn
 
 3. 百度地图  
 
