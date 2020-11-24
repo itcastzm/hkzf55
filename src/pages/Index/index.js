@@ -12,29 +12,31 @@ import Nav4 from '../../assets/images/nav-4.png';
 import './index.scss';
 
 const navs = [
-    { img: Nav1, title: '整租' },
-    { img: Nav2, title: '合租' },
-    { img: Nav3, title: '地图找房' },
-    { img: Nav4, title: '去出租' },
+    { img: Nav1, title: '整租', path: '/home/houselist' },
+    { img: Nav2, title: '合租', path: '/home/houselist' },
+    { img: Nav3, title: '地图找房', path: '/map' },
+    { img: Nav4, title: '去出租', path: '/login' },
 ]
-
-const data1 = Array.from(new Array(4)).map(() => ({
-    icon: 'https://gw.alipayobjects.com/zos/rmsportal/WXoqXTHrSnRcUwEaQgXJ.png',
-}));
-
 
 
 export default class Index extends Component {
 
     state = {
         swipers: [],
+        groups: [],
         imgHeight: 212,
     }
 
     componentDidMount() {
         this.getSwipers();
+        this.getGroups();
     }
 
+    // 导航区域调转回调
+    handleJump(item) {
+        this.props.history.push(item.path);
+    }
+    // 获取轮播图数据
     async getSwipers() {
         const res = await axios.get(`http://localhost:8080/home/swiper`);
 
@@ -43,6 +45,20 @@ export default class Index extends Component {
         });
     }
 
+    // 获取租房小组数据
+    async getGroups() {
+        const res = await axios.get(`http://localhost:8080/home/groups`, {
+            params: {
+                area: 'AREA%7C88cff55c-aaa4-e2e0'
+            }
+        });
+
+        this.setState({
+            groups: res.data.body
+        });
+    }
+
+    // 渲染轮播图
     renderSwipers() {
 
         const { swipers } = this.state;
@@ -72,6 +88,20 @@ export default class Index extends Component {
         return null
     }
 
+    // 渲染租房小组每个卡片区域
+    renderItem = (item) => {
+
+        return (
+            <Flex className="group-item">
+                <Flex.Item className="desc">
+                    <p className="title">{item.title}</p>
+                    <span className="info">{item.desc}</span>
+                </Flex.Item>
+                <img src={`http://localhost:8080${item.imgSrc}`} />
+            </Flex>
+        );
+    }
+
     render() {
         return (
             <div className="index">
@@ -84,7 +114,7 @@ export default class Index extends Component {
                 {/* 导航 */}
                 <Flex className="nav" justify="around">
                     {navs.map((item, index) => (
-                        <Flex.Item key={index}><img src={item.img} alt="" /><h2>{item.title}</h2></Flex.Item>
+                        <Flex.Item key={index} onClick={this.handleJump.bind(this, item)}><img src={item.img} alt="" /><h2>{item.title}</h2></Flex.Item>
                     ))}
                 </Flex>
 
@@ -95,19 +125,11 @@ export default class Index extends Component {
                         <span className="more">更多</span>
                     </div>
 
-                    <Grid data={data1}
+                    <Grid data={this.state.groups}
                         columnNum={2}
                         hasLine={false}
                         square={false}
-                        renderItem={dataItem => (
-                            <Flex className="group-item">
-                                <Flex.Item className="desc">
-                                    <p className="title">家住回龙观</p>
-                                    <span className="info">归属的感觉</span>
-                                </Flex.Item>
-                                <img src="http://localhost:8080/img/groups/1.png" />
-                            </Flex>
-                        )}
+                        renderItem={this.renderItem}
                     />
                 </div>
 
