@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Carousel, Flex } from 'antd-mobile';
+import { Carousel, Flex, Grid } from 'antd-mobile';
 
 import axios from 'axios';
 
@@ -8,9 +8,20 @@ import Nav2 from '../../assets/images/nav-2.png';
 import Nav3 from '../../assets/images/nav-3.png';
 import Nav4 from '../../assets/images/nav-4.png';
 
-
 // 引入样式
 import './index.scss';
+
+const navs = [
+    { img: Nav1, title: '整租' },
+    { img: Nav2, title: '合租' },
+    { img: Nav3, title: '地图找房' },
+    { img: Nav4, title: '去出租' },
+]
+
+const data1 = Array.from(new Array(4)).map(() => ({
+    icon: 'https://gw.alipayobjects.com/zos/rmsportal/WXoqXTHrSnRcUwEaQgXJ.png',
+}));
+
 
 
 export default class Index extends Component {
@@ -72,11 +83,35 @@ export default class Index extends Component {
 
                 {/* 导航 */}
                 <Flex className="nav" justify="around">
-                    <Flex.Item><img src={Nav1} alt="" /><h2>整租</h2></Flex.Item>
-                    <Flex.Item><img src={Nav2} alt="" /><h2>合租</h2></Flex.Item>
-                    <Flex.Item><img src={Nav3} alt="" /><h2>地图找房</h2></Flex.Item>
-                    <Flex.Item><img src={Nav4} alt="" /><h2>去出租</h2></Flex.Item>
+                    {navs.map((item, index) => (
+                        <Flex.Item key={index}><img src={item.img} alt="" /><h2>{item.title}</h2></Flex.Item>
+                    ))}
                 </Flex>
+
+                {/* 租房小组 */}
+                <div className="groups">
+                    <div className="title">
+                        租房小组
+                        <span className="more">更多</span>
+                    </div>
+
+                    <Grid data={data1}
+                        columnNum={2}
+                        hasLine={false}
+                        square={false}
+                        renderItem={dataItem => (
+                            <Flex className="group-item">
+                                <Flex.Item className="desc">
+                                    <p className="title">家住回龙观</p>
+                                    <span className="info">归属的感觉</span>
+                                </Flex.Item>
+                                <img src="http://localhost:8080/img/groups/1.png" />
+                            </Flex>
+                        )}
+                    />
+                </div>
+
+
 
             </div>
         )
