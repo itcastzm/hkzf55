@@ -68,6 +68,7 @@
 
             .desc {
                 flex: 1;
+
                 .title {
                     font-weight: bold;
                     font-size: 13px;
@@ -101,5 +102,43 @@
     }
 
 
+    .news {
+
+        h3 {
+            padding-top: 10px;
+            padding-left: 10px;
+        }
+
+        // 最新资讯
+        .news-item {
+            height: 120px;
+
+            border-bottom: 1px solid #e5e5e5;
+
+            .img-wrap {
+                height: 90px;
+                width: 120px;
+
+                img {
+                    height: 90px;
+                    width: 120px;
+                }
+            }
+
+            .desc {
+                padding: 15px 5px 15px 5px;
+                flex: 1;
+                height: 120px;
+
+                h3 {
+                    padding: 0;
+                }
+
+                .info {
+                    width: 100%;
+                }
+            }
+        }
+    }
 
 }

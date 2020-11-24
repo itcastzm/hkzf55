@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Carousel, Flex, Grid } from 'antd-mobile';
+import { Carousel, Flex, Grid, WingBlank } from 'antd-mobile';
 
 import axios from 'axios';
 
@@ -24,12 +24,14 @@ export default class Index extends Component {
     state = {
         swipers: [],
         groups: [],
+        news: [],
         imgHeight: 212,
     }
 
     componentDidMount() {
         this.getSwipers();
         this.getGroups();
+        this.getNews();
     }
 
     // 导航区域调转回调
@@ -55,6 +57,19 @@ export default class Index extends Component {
 
         this.setState({
             groups: res.data.body
+        });
+    }
+
+    // 获取最新资讯数据
+    async getNews() {
+        const res = await axios.get(`http://localhost:8080/home/news`, {
+            params: {
+                area: 'AREA%7C88cff55c-aaa4-e2e0'
+            }
+        });
+
+        this.setState({
+            news: res.data.body
         });
     }
 
@@ -102,6 +117,25 @@ export default class Index extends Component {
         );
     }
 
+    // 渲染最新资讯每个块区域
+    renderNewItem = (item) => {
+        return (
+            <Flex className="news-item">
+                <div className="img-wrap">
+                    <img src={`http://localhost:8080${item.imgSrc}`} alt="" />
+                </div>
+                <Flex className="desc" justify="between" direction="column">
+                    <h3> {item.title}</h3>
+                    <Flex justify="between" className="info" >
+                        <span>{item.from}</span>
+                        <span>{item.date}</span>
+                    </Flex>
+                </Flex>
+
+            </Flex>
+        )
+    }
+
     render() {
         return (
             <div className="index">
@@ -133,6 +167,19 @@ export default class Index extends Component {
                     />
                 </div>
 
+                {/* 最新资讯 */}
+                <div className="news">
+                    <h3>最新资讯</h3>
+                    <WingBlank>
+                        <Grid data={this.state.news}
+                            columnNum={1}
+                            hasLine={false}
+                            square={false}
+                            renderItem={this.renderNewItem}
+                        />
+                    </WingBlank>
+
+                </div>
 
 
             </div>
