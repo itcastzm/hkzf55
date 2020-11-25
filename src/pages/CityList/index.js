@@ -6,6 +6,8 @@ import axios from 'axios';
 
 import './index.scss';
 
+import  { getCurrentCity } from '../../utils'
+
 
 function formatCityList(list) {
 
@@ -33,6 +35,10 @@ function formatCityList(list) {
 
 export default class CityList extends Component {
 
+    state = {
+        cityIndex: [],
+        cityList: {}
+    }
 
     // 获取城市信息
     componentDidMount() {
@@ -50,10 +56,20 @@ export default class CityList extends Component {
 
         const hotRes = await axios.get(`http://localhost:8080/area/hot`);
 
+
         cityIndex.unshift('hot');
         cityList['hot']= hotRes.data.body;
 
-        console.log(cityIndex, cityList);
+        const curcityInfo = await getCurrentCity();
+
+        cityIndex.unshift('#');
+        cityList['#'] = [curcityInfo];
+
+        this.setState({
+            cityIndex,
+            cityList
+        });
+        // console.log(cityIndex, cityList);
     }
 
     render() {

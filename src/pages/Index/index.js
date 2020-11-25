@@ -40,14 +40,8 @@ export default class Index extends Component {
         this.getGroups();
         this.getNews();
 
+        this.getCityInfo();
 
-        var myCity = new window.BMap.LocalCity();
-
-
-        myCity.get((result) => {
-            var cityName = result.name;
-            this.getCityInfo(cityName);
-        });
     }
 
     // 导航区域调转回调
@@ -56,12 +50,22 @@ export default class Index extends Component {
     }
 
     // 获取城市详细信息
-    async getCityInfo(cityName) {
-        const res = await axios.get(`http://localhost:8080/area/info?name=${cityName}`);
+     getCityInfo() {
 
-        this.setState({
-            cityInfo: res.data.body
+        var myCity = new window.BMap.LocalCity();
+
+
+        myCity.get( async (result) => {
+            var cityName = result.name;
+
+            const res = await axios.get(`http://localhost:8080/area/info?name=${cityName}`);
+
+            this.setState({
+                cityInfo: res.data.body
+            });
         });
+
+
     }
 
     // 获取轮播图数据
@@ -162,7 +166,7 @@ export default class Index extends Component {
     }
 
     // 城市信息点击事件
-    handleCityList = ()=> {
+    handleCityList = () => {
         this.props.history.push('/citylist');
     }
 
@@ -180,7 +184,7 @@ export default class Index extends Component {
 
                     <Flex className="search-box">
                         <Flex className="search">
-                            <div className="location"  onClick={this.handleCityList}>
+                            <div className="location" onClick={this.handleCityList}>
                                 {cityInfo ? cityInfo.label : '上海'}
                                 <i className="iconfont icon-arrow"></i>
                             </div>
