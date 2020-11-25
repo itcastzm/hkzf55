@@ -48,6 +48,11 @@ export default class CityList extends Component {
 
         const { cityList, cityIndex } = formatCityList(res.data.body);
 
+        const hotRes = await axios.get(`http://localhost:8080/area/hot`);
+
+        cityIndex.unshift('hot');
+        cityList['hot']= hotRes.data.body;
+
         console.log(cityIndex, cityList);
     }
 
