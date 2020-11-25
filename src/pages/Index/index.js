@@ -161,6 +161,11 @@ export default class Index extends Component {
         )
     }
 
+    // 城市信息点击事件
+    handleCityList = ()=> {
+        this.props.history.push('/citylist');
+    }
+
     render() {
 
         const { cityInfo } = this.state;
@@ -175,7 +180,7 @@ export default class Index extends Component {
 
                     <Flex className="search-box">
                         <Flex className="search">
-                            <div className="location">
+                            <div className="location"  onClick={this.handleCityList}>
                                 {cityInfo ? cityInfo.label : '上海'}
                                 <i className="iconfont icon-arrow"></i>
                             </div>
