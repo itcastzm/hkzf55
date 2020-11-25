@@ -48,7 +48,6 @@ function formatCityList(list) {
   5 修改 rowRenderer 方法中渲染的每行结构和样式。
   6 修改 List 组件的 rowHeight 为函数，动态计算每一行的高度（因为每一行高度都不相同）。
   
-
 */
 
 
@@ -61,7 +60,8 @@ export default class CityList extends Component {
 
     state = {
         cityIndex: [],
-        cityList: {}
+        cityList: {},
+        curIndex: 0
     }
 
     // 获取城市信息
@@ -127,13 +127,10 @@ export default class CityList extends Component {
                 break;
         }
 
-
-
         return (
             <div key={key} style={style} className="city">
                 <div className="title">{title}</div>
                 {list.map((item, i) => (<div key={i} className="name">{item.label}</div>))}
-
             </div>
         );
     }
@@ -157,6 +154,20 @@ export default class CityList extends Component {
                         />
                     )}
                 </AutoSizer>
+
+                <ul  className="city-index">
+                    
+                    {  this.state.cityIndex.map((item, i)=> (
+                        <li key={i}  className="city-index-item">
+                            <span className={ i === this.state.curIndex ? 'index-active' : ''}>
+                                { item === 'hot' ? '热': item.toUpperCase()}
+                            </span>
+                        </li>
+
+                    ))}
+
+                </ul>
+
             </div>
         )
     }
