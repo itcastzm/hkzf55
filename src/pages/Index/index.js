@@ -32,18 +32,38 @@ export default class Index extends Component {
         groups: [],
         news: [],
         imgHeight: 212,
+        cityInfo: null
     }
 
     componentDidMount() {
         this.getSwipers();
         this.getGroups();
         this.getNews();
+
+
+        var myCity = new window.BMap.LocalCity();
+
+
+        myCity.get((result) => {
+            var cityName = result.name;
+            this.getCityInfo(cityName);
+        });
     }
 
     // 导航区域调转回调
     handleJump(item) {
         this.props.history.push(item.path);
     }
+
+    // 获取城市详细信息
+    async getCityInfo(cityName) {
+        const res = await axios.get(`http://localhost:8080/area/info?name=${cityName}`);
+
+        this.setState({
+            cityInfo: res.data.body
+        });
+    }
+
     // 获取轮播图数据
     async getSwipers() {
         const res = await axios.get(`http://localhost:8080/home/swiper`);
@@ -142,6 +162,9 @@ export default class Index extends Component {
     }
 
     render() {
+
+        const { cityInfo } = this.state;
+
         return (
             <div className="index">
 
@@ -153,7 +176,7 @@ export default class Index extends Component {
                     <Flex className="search-box">
                         <Flex className="search">
                             <div className="location">
-                                广州
+                                {cityInfo ? cityInfo.label : '上海'}
                                 <i className="iconfont icon-arrow"></i>
                             </div>
                             <div className="form">
