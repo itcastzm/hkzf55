@@ -2,11 +2,14 @@ import React, { Component } from 'react'
 
 import { NavBar, Icon } from 'antd-mobile';
 
+// 导入List组件
+import { List, AutoSizer, WindowScroller } from 'react-virtualized';
+
 import axios from 'axios';
 
 import './index.scss';
 
-import  { getCurrentCity } from '../../utils'
+import { getCurrentCity } from '../../utils'
 
 
 function formatCityList(list) {
@@ -33,6 +36,25 @@ function formatCityList(list) {
 
 }
 
+
+
+
+
+function rowRenderer({
+    key, // Unique key within array of rows
+    index, // Index of row within collection
+    isScrolling, // The List is currently being scrolled
+    isVisible, // This row is visible within the List (eg it is not an overscanned row)
+    style, // Style object to be applied to row (to position it)
+}) {
+    return (
+        <div key={key} style={style}>
+            <h3>一行数据</h3>
+        </div>
+    );
+}
+
+
 export default class CityList extends Component {
 
     state = {
@@ -58,7 +80,7 @@ export default class CityList extends Component {
 
 
         cityIndex.unshift('hot');
-        cityList['hot']= hotRes.data.body;
+        cityList['hot'] = hotRes.data.body;
 
         const curcityInfo = await getCurrentCity();
 
@@ -79,9 +101,23 @@ export default class CityList extends Component {
                     mode="light"
                     icon={<i className="iconfont icon-back"></i>}
                     onLeftClick={() => this.props.history.go(-1)}
-
                 >城市选择</NavBar>
-                城市选择页面
+
+                <WindowScroller>
+                    {({ height, isScrolling, onChildScroll, scrollTop }) => (
+                        <AutoSizer>
+                            {({ width }) => (
+                                <List
+                                    width={width}
+                                    height={height}
+                                    rowCount={this.state.cityIndex.length}
+                                    rowHeight={50}
+                                    rowRenderer={rowRenderer}
+                                />
+                            )}
+                        </AutoSizer>
+                    )}
+                </WindowScroller>
             </div>
         )
     }
