@@ -37,9 +37,6 @@ function formatCityList(list) {
 }
 
 
-
-
-
 function rowRenderer({
     key, // Unique key within array of rows
     index, // Index of row within collection
@@ -54,6 +51,20 @@ function rowRenderer({
     );
 }
 
+
+/* 
+  1 将获取到的 cityList 和 cityIndex  添加为组件的状态数据。
+  2 修改 List 组件的 rowCount 为 cityIndex 的长度。
+  3 将 rowRenderer 函数，添加到组件中，以便在函数中获取到状态数据 cityList 和 cityIndex。
+  4 修改 List 组件的 rowRenderer 为组件中的 rowRenderer 方法。
+  5 修改 rowRenderer 方法中渲染的每行结构和样式。
+  6 修改 List 组件的 rowHeight 为函数，动态计算每一行的高度（因为每一行高度都不相同）。
+  
+  <div key={key} style={style} className="city">
+    <div className="title">S</div>
+    <div className="name">上海</div>
+  </div>
+*/
 
 export default class CityList extends Component {
 
@@ -103,10 +114,10 @@ export default class CityList extends Component {
                     onLeftClick={() => this.props.history.go(-1)}
                 >城市选择</NavBar>
 
-                <WindowScroller>
-                    {({ height, isScrolling, onChildScroll, scrollTop }) => (
+                {/* <WindowScroller>
+                    {({ height, isScrolling, onChildScroll, scrollTop }) => ( */}
                         <AutoSizer>
-                            {({ width }) => (
+                            {({height, width }) => (
                                 <List
                                     width={width}
                                     height={height}
@@ -116,8 +127,8 @@ export default class CityList extends Component {
                                 />
                             )}
                         </AutoSizer>
-                    )}
-                </WindowScroller>
+                    {/* )} */}
+                {/* </WindowScroller> */}
             </div>
         )
     }
