@@ -5,7 +5,8 @@ import { withRouter } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
 
-import './index.scss';
+// import './index.scss';
+import styles from './index.module.css';
 
 function NavHeader(props) {
 
