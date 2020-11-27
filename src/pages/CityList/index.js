@@ -38,20 +38,6 @@ function formatCityList(list) {
 }
 
 
-
-
-
-/* 
-  1 将获取到的 cityList 和 cityIndex  添加为组件的状态数据。
-  2 修改 List 组件的 rowCount 为 cityIndex 的长度。
-  3 将 rowRenderer 函数，添加到组件中，以便在函数中获取到状态数据 cityList 和 cityIndex。
-  4 修改 List 组件的 rowRenderer 为组件中的 rowRenderer 方法。
-  5 修改 rowRenderer 方法中渲染的每行结构和样式。
-  6 修改 List 组件的 rowHeight 为函数，动态计算每一行的高度（因为每一行高度都不相同）。
-  
-*/
-
-
 // 索引（A、B等）的高度
 const TITLE_HEIGHT = 36
 // 每个城市名称的高度
@@ -59,16 +45,25 @@ const NAME_HEIGHT = 50
 
 export default class CityList extends Component {
 
-    state = {
-        cityIndex: [],
-        cityList: {},
-        curIndex: 0
+
+    constructor() {
+        super();
+        this.state = {
+            cityIndex: [],
+            cityList: {},
+            curIndex: 0
+        }
+
+        // 创建ref引用
+        this.listRef = React.createRef();
     }
+
 
     // 获取城市信息
     componentDidMount() {
 
         this.fetchCityList();
+
     }
     // 获取列表每一行的高度
     getRowHeight = ({ index }) => {
@@ -100,6 +95,9 @@ export default class CityList extends Component {
             cityIndex,
             cityList
         });
+
+        // 解决List组件js驱动滚动误差问题
+        this.listRef.current.measureAllRows();
         // console.log(cityIndex, cityList);
     }
 
@@ -114,6 +112,14 @@ export default class CityList extends Component {
                 curIndex: startIndex
             })
         }
+    }
+
+    // 该方法在使用的时候 已经绑定this  所以需要在定义的时候绑定this
+    // 右侧索引点击滚动 List组件
+    scrollTo(index) {
+        // 通过非受控拿到List组件的实例
+        // console.log(this.listRef.current);
+        this.listRef.current.scrollToRow(index);
     }
 
 
@@ -166,6 +172,8 @@ export default class CityList extends Component {
                             rowHeight={this.getRowHeight}
                             rowRenderer={this.rowRenderer}
                             onRowsRendered={this.onRowsRendered}
+                            ref={this.listRef}
+                            scrollToAlignment={'start'}
                         />
                     )}
                 </AutoSizer>
@@ -173,7 +181,8 @@ export default class CityList extends Component {
                 <ul className="city-index">
 
                     {this.state.cityIndex.map((item, i) => (
-                        <li key={i} className="city-index-item">
+                        // <li key={i} className="city-index-item"  onClick={this.scrollTo.bind(this, i)} >
+                        <li key={i} className="city-index-item" onClick={() => this.scrollTo(i)} >
                             <span className={i === this.state.curIndex ? 'index-active' : ''}>
                                 {item === 'hot' ? '热' : item.toUpperCase()}
                             </span>
