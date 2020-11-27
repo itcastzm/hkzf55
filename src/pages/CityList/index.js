@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { NavBar, Toast } from 'antd-mobile';
+import { Toast } from 'antd-mobile';
 
 // 导入List组件
 import { List, AutoSizer, WindowScroller } from 'react-virtualized';
@@ -10,6 +10,8 @@ import axios from 'axios';
 import './index.scss';
 
 import { getCurrentCity } from '../../utils'
+
+import NavHeader from '../../components/NavHeader'
 
 
 function formatCityList(list) {
@@ -107,11 +109,11 @@ export default class CityList extends Component {
     }
 
     // List 每一行即将渲染时触发回调
-    onRowsRendered = ({ startIndex }) => {
+    onRowsRendered = ({ overscanStartIndex, startIndex }) => {
 
         const { curIndex } = this.state;
 
-        if (curIndex !== startIndex) {
+        if (curIndex !== startIndex && overscanStartIndex != 0) {
             // console.log('startIndex', startIndex);
             this.setState({
                 curIndex: startIndex
@@ -178,11 +180,8 @@ export default class CityList extends Component {
     render() {
         return (
             <div className="citylist-wrapper">
-                <NavBar
-                    mode="light"
-                    icon={<i className="iconfont icon-back"></i>}
-                    onLeftClick={() => this.props.history.go(-1)}
-                >城市选择</NavBar>
+
+                <NavHeader >城市选择</NavHeader>
                 <AutoSizer>
                     {({ height, width }) => (
                         <List

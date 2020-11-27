@@ -57,7 +57,7 @@ export default class Index extends Component {
         this.props.history.push(item.path);
     }
 
-    
+
     // 获取轮播图数据
     async getSwipers() {
         const res = await axios.get(`http://localhost:8080/home/swiper`);
@@ -183,7 +183,8 @@ export default class Index extends Component {
                                 <span>请输入小区或地址</span>
                             </div>
                         </Flex>
-                        <i className="iconfont  icon-map"></i>
+                        <i className="iconfont  icon-map"
+                            onClick={() => this.props.history.push('/map')}></i>
                     </Flex>
 
                 </div>
@@ -191,7 +192,9 @@ export default class Index extends Component {
                 {/* 导航 */}
                 <Flex className="nav" justify="around">
                     {navs.map((item, index) => (
-                        <Flex.Item key={index} onClick={this.handleJump.bind(this, item)}><img src={item.img} alt="" /><h2>{item.title}</h2></Flex.Item>
+                        <Flex.Item key={index} onClick={this.handleJump.bind(this, item)}>
+                            <img src={item.img} alt="" />
+                            <h2>{item.title}</h2></Flex.Item>
                     ))}
                 </Flex>
 
