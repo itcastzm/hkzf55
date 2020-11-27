@@ -21,7 +21,7 @@ export default class Map extends Component {
         return (
             <div className="map-wrapper">
 
-                <NavHeader > 地图找房 </NavHeader>
+                <NavHeader >地图找房</NavHeader>
 
                 <div id="container"></div>
             </div>
