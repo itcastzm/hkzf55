@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 // 导入NavHeader组件
 import NavHeader from '../../components/NavHeader';
 
+import axios from 'axios';
 
 import { getCurrentCity } from '../../utils'
 // import './index.scss';
@@ -15,11 +16,15 @@ export default class Map extends Component {
 
     async componentDidMount() {
 
-        const { label } = await getCurrentCity();
+        const { label, value } = await getCurrentCity();
 
-        // console.log(cityInfo);
+        // console.log(label, value);
+
+        const res = await axios.get(`http://localhost:8080/area/map?id=${value}`);
 
         var map = new window.BMap.Map("container");
+
+        console.log(res.data.body);
 
 
         // 创建地址解析器实例     
@@ -30,7 +35,32 @@ export default class Map extends Component {
                 console.log(point, 'point');
 
                 map.centerAndZoom(point, 11);
+
+                map.addControl(new window.BMap.NavigationControl());
+                map.addControl(new window.BMap.ScaleControl());
+                // map.addControl(new window.BMap.OverviewMapControl());
+
                 // map.addOverlay(new BMap.Marker(point));
+
+
+                var opts = {
+                    position: point, // 指定文本标注所在的地理位置
+                    offset: new window.BMap.Size(30, -30) // 设置文本偏移量
+                };
+                // 创建文本标注对象
+                var label = new window.BMap.Label('你好', opts);
+                // 自定义文本标注样式
+                label.setStyle({
+                    color: 'red',
+                    borderRadius: '5px',
+                    borderColor: '#ccc',
+                    padding: '10px',
+                    fontSize: '16px',
+                    height: '30px',
+                    lineHeight: '30px',
+                    fontFamily: '微软雅黑'
+                });
+                map.addOverlay(label);
             }
         }, label);
 
