@@ -11,12 +11,15 @@ import Nav4 from '../../assets/images/nav-4.png';
 // 引入样式
 import './index.scss';
 
+import { getCurrentCity } from '../../utils'
+
 const navs = [
     { img: Nav1, title: '整租', path: '/home/houselist' },
     { img: Nav2, title: '合租', path: '/home/houselist' },
     { img: Nav3, title: '地图找房', path: '/map' },
     { img: Nav4, title: '去出租', path: '/login' },
 ]
+
 
 
 // // 获取地理位置信息
@@ -35,12 +38,17 @@ export default class Index extends Component {
         cityInfo: null
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.getSwipers();
         this.getGroups();
         this.getNews();
 
-        this.getCityInfo();
+        // this.getCityInfo();
+        const curcityInfo = await getCurrentCity();
+
+        this.setState({
+            cityInfo: curcityInfo
+        });
 
     }
 
@@ -49,25 +57,7 @@ export default class Index extends Component {
         this.props.history.push(item.path);
     }
 
-    // 获取城市详细信息
-     getCityInfo() {
-
-        var myCity = new window.BMap.LocalCity();
-
-
-        myCity.get( async (result) => {
-            var cityName = result.name;
-
-            const res = await axios.get(`http://localhost:8080/area/info?name=${cityName}`);
-
-            this.setState({
-                cityInfo: res.data.body
-            });
-        });
-
-
-    }
-
+    
     // 获取轮播图数据
     async getSwipers() {
         const res = await axios.get(`http://localhost:8080/home/swiper`);

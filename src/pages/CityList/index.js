@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { NavBar, Icon } from 'antd-mobile';
+import { NavBar, Toast } from 'antd-mobile';
 
 // 导入List组件
 import { List, AutoSizer, WindowScroller } from 'react-virtualized';
@@ -63,6 +63,8 @@ export default class CityList extends Component {
     componentDidMount() {
 
         this.fetchCityList();
+        //    // 2. 解决List组件js驱动滚动误差问题
+        //    this.listRef.current.measureAllRows();
 
     }
     // 获取列表每一行的高度
@@ -94,10 +96,13 @@ export default class CityList extends Component {
         this.setState({
             cityIndex,
             cityList
+        }, () => {
+            // 2. 解决List组件js驱动滚动误差问题
+            this.listRef.current.measureAllRows();
         });
 
-        // 解决List组件js驱动滚动误差问题
-        this.listRef.current.measureAllRows();
+        // 1. 解决List组件js驱动滚动误差问题
+        // this.listRef.current.measureAllRows();
         // console.log(cityIndex, cityList);
     }
 
@@ -122,6 +127,19 @@ export default class CityList extends Component {
         this.listRef.current.scrollToRow(index);
     }
 
+    // 切换城市
+    changeCity(item) {
+        if (['北京', '上海', '广州', '深圳'].indexOf(item.label) > -1) {
+            // 正常切换
+            localStorage.setItem('hkzf_55_city', JSON.stringify(item));
+
+            this.props.history.go(-1);
+
+        } else {
+            //没有房源数据
+            Toast.info('该城市暂无房源数据！', 2, null, false);
+        }
+    }
 
     rowRenderer = ({
         key, // Unique key within array of rows
@@ -150,7 +168,9 @@ export default class CityList extends Component {
         return (
             <div key={key} style={style} className="city">
                 <div className="title">{title}</div>
-                {list.map((item, i) => (<div key={i} className="name">{item.label}</div>))}
+                {list.map((item, i) => (<div key={i}
+                    onClick={this.changeCity.bind(this, item)}
+                    className="name">{item.label}</div>))}
             </div>
         );
     }
