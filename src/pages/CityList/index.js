@@ -27,6 +27,7 @@ function formatCityList(list) {
         }
     }
 
+    //  'a'  'b'  'c'  ASCII
     const cityIndex = Object.keys(cityList).sort();
 
     return {
@@ -102,6 +103,19 @@ export default class CityList extends Component {
         // console.log(cityIndex, cityList);
     }
 
+    // List 每一行即将渲染时触发回调
+    onRowsRendered = ({ startIndex }) => {
+
+        const { curIndex } = this.state;
+
+        if (curIndex !== startIndex) {
+            // console.log('startIndex', startIndex);
+            this.setState({
+                curIndex: startIndex
+            })
+        }
+    }
+
 
     rowRenderer = ({
         key, // Unique key within array of rows
@@ -151,16 +165,17 @@ export default class CityList extends Component {
                             rowCount={this.state.cityIndex.length}
                             rowHeight={this.getRowHeight}
                             rowRenderer={this.rowRenderer}
+                            onRowsRendered={this.onRowsRendered}
                         />
                     )}
                 </AutoSizer>
 
-                <ul  className="city-index">
-                    
-                    {  this.state.cityIndex.map((item, i)=> (
-                        <li key={i}  className="city-index-item">
-                            <span className={ i === this.state.curIndex ? 'index-active' : ''}>
-                                { item === 'hot' ? '热': item.toUpperCase()}
+                <ul className="city-index">
+
+                    {this.state.cityIndex.map((item, i) => (
+                        <li key={i} className="city-index-item">
+                            <span className={i === this.state.curIndex ? 'index-active' : ''}>
+                                {item === 'hot' ? '热' : item.toUpperCase()}
                             </span>
                         </li>
 

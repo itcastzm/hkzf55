@@ -10,7 +10,7 @@ export function getCurrentCity() {
         // 调用 resolve() 进入成功状态
         // 调用 reject  进入失败状态
         try {
-            // 先去localstorage查下 有没有
+            // 先去localstorage查下 有没有  5M  cookie 4k
             const curCityStr = localStorage.getItem('hkzf_55_city');
 
             // localstorage数据处理
