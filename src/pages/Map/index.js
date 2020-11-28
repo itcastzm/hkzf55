@@ -114,58 +114,89 @@ export default class Map extends Component {
     async renderOverlays(id) {
         const res = await axios.get(`http://localhost:8080/area/map?id=${id}`);
 
-        // 获取地图的缩放级别
-        const zoom = this.map.getZoom();
 
-        console.log(zoom);
 
+
+        const { nextZoom, type } = this.getTypeAndNextZoom();
         // console.log(res.data.body);
 
         res.data.body.forEach((v, i) => {
 
-            // new BMap.Point(116.404, 39.915);
-            let labelPoint = new window.BMap.Point(v.coord.longitude, v.coord.latitude);
-
-            let opts = {
-                position: labelPoint, // 指定文本标注所在的地理位置
-                offset: new window.BMap.Size(-35, -35) // 设置文本偏移量
-            };
-            // 创建文本标注对象
-            let label = new window.BMap.Label('', opts);
-            // 自定义文本标注样式
-            label.setStyle(labelStyle);
-
-            // 添加覆盖物内部html标签
-            label.setContent(`
-                        <p class="${styles.name}">${v.label}</p>
-                        <p class="${styles.count}">${v.count}套</p>
-            `);
-
-
-            label.addEventListener('click', () => {
-                // 1. 地图发生了移动
-                // map.panTo(labelPoint);
-                // 2. 地图放大了
-                // map.setZoom(13);
-                this.map.centerAndZoom(labelPoint, 13);
-                // 3. 原来的覆盖物 被清除了
-                setTimeout(() => {
-                    this.map.clearOverlays();
-                }, 0);
-
-                // 4. 镇的数据 被渲染成覆盖物
-                // this.getData();
-                // const res = await axios.get(`http://localhost:8080/area/map?id=${v.value}`);
-
-                // console.log(res.data.body);
-
-            });
-            this.map.addOverlay(label);
+            // 下一级点击缩放级别  nextZoom
+            //覆盖物的类型 type  :  circle  rect
+            this.createOverlays(v, nextZoom, type);
         })
     }
-    // 创建覆盖物
-    createOverlays() {
 
+
+    getTypeAndNextZoom() {
+        // 获取地图的缩放级别
+        const zoom = this.map.getZoom();
+
+        let nextZoom, type;
+
+        // 区 zoom  -> 11     nextZoom 13  type circle  zoom 11   10<zoom < 12
+        // 镇 zoom  -> 13     nextZoom 15  type rect zoom 11   12 <zoom < 14
+        // 小区 zoom -> 15    14 <zoom < 16
+
+        if (10 < zoom < 12) {
+            nextZoom = 13;
+            type = 'cicle';
+        } else if (12 < zoom < 14) {
+            nextZoom = 15;
+            type = 'rect';
+        }
+
+        return {
+            nextZoom,
+            type
+        };
+
+    }
+    // 创建覆盖物
+    createOverlays({ label: name, count, value, coord: {
+        longitude, latitude
+    } }, nextZoom, type) {
+        // new BMap.Point(116.404, 39.915);
+        let labelPoint = new window.BMap.Point(longitude, latitude);
+
+        let opts = {
+            position: labelPoint, // 指定文本标注所在的地理位置
+            offset: new window.BMap.Size(-35, -35) // 设置文本偏移量
+        };
+        // 创建文本标注对象
+        let label = new window.BMap.Label('', opts);
+        // 自定义文本标注样式
+        label.setStyle(labelStyle);
+
+        // 添加覆盖物内部html标签
+        label.setContent(`
+            <p class="${styles.name}">${name}</p>
+            <p class="${styles.count}">${count}套</p>
+        `);
+
+
+        label.addEventListener('click', () => {
+            // 1. 地图发生了移动
+            // map.panTo(labelPoint);
+            // 2. 地图放大了
+            // map.setZoom(13);
+            this.map.centerAndZoom(labelPoint, nextZoom);
+            // 3. 原来的覆盖物 被清除了
+            setTimeout(() => {
+                this.map.clearOverlays();
+            }, 0);
+            // 4. 下一级房源 覆盖物 渲染
+            this.renderOverlays(value);
+
+
+            // this.getData();
+            // const res = await axios.get(`http://localhost:8080/area/map?id=${v.value}`);
+
+            // console.log(res.data.body);
+
+        });
+        this.map.addOverlay(label);
     }
     // 创建圆形覆盖物
     createCircle() {
