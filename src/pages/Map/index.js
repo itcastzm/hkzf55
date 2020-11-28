@@ -114,15 +114,9 @@ export default class Map extends Component {
     async renderOverlays(id) {
         const res = await axios.get(`http://localhost:8080/area/map?id=${id}`);
 
-
-
-
         const { nextZoom, type } = this.getTypeAndNextZoom();
-        // console.log(res.data.body);
 
         res.data.body.forEach((v, i) => {
-
-            // 下一级点击缩放级别  nextZoom
             //覆盖物的类型 type  :  circle  rect
             this.createOverlays(v, nextZoom, type);
         })
@@ -141,7 +135,7 @@ export default class Map extends Component {
 
         if (10 < zoom < 12) {
             nextZoom = 13;
-            type = 'cicle';
+            type = 'circle';
         } else if (12 < zoom < 14) {
             nextZoom = 15;
             type = 'rect';
@@ -160,8 +154,19 @@ export default class Map extends Component {
         // new BMap.Point(116.404, 39.915);
         let labelPoint = new window.BMap.Point(longitude, latitude);
 
+        if (type === 'circle') {
+            this.createCircle(labelPoint, name, count, value, nextZoom);
+        } else {
+            // 渲染方形覆盖物
+            this.createRect(labelPoint, name, count, value);
+        }
+
+    }
+    // 创建圆形覆盖物
+    createCircle(point, name, count, id, nextZoom) {
+
         let opts = {
-            position: labelPoint, // 指定文本标注所在的地理位置
+            position: point, // 指定文本标注所在的地理位置
             offset: new window.BMap.Size(-35, -35) // 设置文本偏移量
         };
         // 创建文本标注对象
@@ -181,31 +186,45 @@ export default class Map extends Component {
             // map.panTo(labelPoint);
             // 2. 地图放大了
             // map.setZoom(13);
-            this.map.centerAndZoom(labelPoint, nextZoom);
+
+            this.map.centerAndZoom(point, nextZoom);
             // 3. 原来的覆盖物 被清除了
             setTimeout(() => {
                 this.map.clearOverlays();
             }, 0);
             // 4. 下一级房源 覆盖物 渲染
-            this.renderOverlays(value);
-
-
+            this.renderOverlays(id);
             // this.getData();
             // const res = await axios.get(`http://localhost:8080/area/map?id=${v.value}`);
-
             // console.log(res.data.body);
-
         });
-        this.map.addOverlay(label);
-    }
-    // 创建圆形覆盖物
-    createCircle() {
 
+        this.map.addOverlay(label);
     }
 
     // 创建方形覆盖物
-    createRect() {
+    createRect(point, name, count, id) {
+        let opts = {
+            position: point, // 指定文本标注所在的地理位置
+            offset: new window.BMap.Size(-35, -35) // 设置文本偏移量
+        };
+        // 创建文本标注对象
+        let label = new window.BMap.Label('', opts);
+        // 自定义文本标注样式
+        label.setStyle(labelStyle);
 
+        // 添加覆盖物内部html标签
+        label.setContent(`
+            <p class="${styles.name}">${name}</p>
+            <p class="${styles.count}">${count}套</p>
+        `);
+
+
+        label.addEventListener('click', () => {
+            //被点击了
+        });
+
+        this.map.addOverlay(label);
     }
 
     render() {
