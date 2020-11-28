@@ -28,12 +28,16 @@ const labelStyle = {
 
 export default class Map extends Component {
 
+    state = {
+        houselist: []
+    }
 
-    async componentDidMount() {
+    componentDidMount() {
+        this.initMap();
+    }
 
+    async initMap() {
         const { label, value } = await getCurrentCity();
-
-        // console.log(label, value);
 
         var map = new window.BMap.Map("container");
         this.map = map;
@@ -43,8 +47,6 @@ export default class Map extends Component {
         // 将地址解析结果显示在地图上，并调整地图视野    
         myGeo.getPoint(label, (point) => {
             if (point) {
-                // console.log(point, 'point');
-
                 map.centerAndZoom(point, 11);
 
                 // 添加地图控件
@@ -52,62 +54,8 @@ export default class Map extends Component {
                 map.addControl(new window.BMap.ScaleControl());
 
                 this.renderOverlays(value);
-
-                // map.addControl(new window.BMap.OverviewMapControl());
-
-                // map.addOverlay(new BMap.Marker(point));
-                // const res = await axios.get(`http://localhost:8080/area/map?id=${value}`);
-
-                // console.log(res.data.body);
-
-                // res.data.body.forEach((v, i) => {
-
-                // new BMap.Point(116.404, 39.915);
-                // let labelPoint = new window.BMap.Point(v.coord.longitude, v.coord.latitude);
-
-                //     let opts = {
-                //         position: labelPoint, // 指定文本标注所在的地理位置
-                //         offset: new window.BMap.Size(-35, -35) // 设置文本偏移量
-                //     };
-                //     // 创建文本标注对象
-                //     let label = new window.BMap.Label('', opts);
-                //     // 自定义文本标注样式
-                //     label.setStyle(labelStyle);
-
-                //     // 添加覆盖物内部html标签
-                //     label.setContent(`
-                //                 <p class="${styles.name}">${v.label}</p>
-                //                 <p class="${styles.count}">${v.count}套</p>
-                //     `);
-
-
-                //     label.addEventListener('click', () => {
-                //         // 1. 地图发生了移动
-                //         // map.panTo(labelPoint);
-                //         // 2. 地图放大了
-                //         // map.setZoom(13);
-                //         map.centerAndZoom(labelPoint, 13);
-                //         // 3. 原来的覆盖物 被清除了
-                //         setTimeout(() => {
-                //             map.clearOverlays();
-                //         }, 0);
-
-                //         // 4. 镇的数据 被渲染成覆盖物
-                //         // this.getData();
-                //         // const res = await axios.get(`http://localhost:8080/area/map?id=${v.value}`);
-
-                //         // console.log(res.data.body);
-
-                //     });
-                //     map.addOverlay(label);
-                // })
-
             }
         }, label);
-
-        // var point = new window.BMap.Point(116.404, 39.915);
-
-        // map.centerAndZoom(point, 15);
     }
 
     // 请求数据 并渲染覆盖物
@@ -210,7 +158,7 @@ export default class Map extends Component {
     createRect(point, name, count, id) {
         let opts = {
             position: point, // 指定文本标注所在的地理位置
-            offset: new window.BMap.Size(-35, -35) // 设置文本偏移量
+            offset: new window.BMap.Size(-60, -10) // 设置文本偏移量
         };
         // 创建文本标注对象
         let label = new window.BMap.Label('', opts);
@@ -232,15 +180,30 @@ export default class Map extends Component {
         label.setContent(`
             <span class="${styles.rectName}">${name}</span>
             <span class="${styles.rectCount}">${count}套</span>
+            <i class="${styles.traingle}"></i>
         `);
 
 
         label.addEventListener('click', () => {
             //被点击了
+            // 1. 根据地区id请求房源数据
+            this.getHouseList(id);
+            // 2. 将被点击的位置 移动到地图中央
+            // 3 渲染房源列表
             console.log('方形 覆盖物被点击了！')
         });
 
         this.map.addOverlay(label);
+    }
+
+
+    async getHouseList(id) {
+        const res = await axios.get(`http://localhost:8080/houses?cityId=${id}`);
+        // 将数据存储到state当中
+        // console.log(res.data.body);
+        this.setState({
+            houselist: res.data.body.list
+        });
     }
 
     render() {
@@ -251,6 +214,17 @@ export default class Map extends Component {
 
                 <div id="container">
 
+                </div>
+
+                <div  className="housearea">
+                    <div className="title">
+                        <h3>房源列表</h3>
+                        <div className="more">更多房源</div>
+                    </div>
+
+                    <div className="houselist">
+                            {/* {this.state.houselist.map()} */}
+                    </div>
                 </div>
             </div>
         )
