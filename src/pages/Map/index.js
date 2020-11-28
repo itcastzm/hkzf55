@@ -133,11 +133,13 @@ export default class Map extends Component {
         // 镇 zoom  -> 13     nextZoom 15  type rect zoom 11   12 <zoom < 14
         // 小区 zoom -> 15    14 <zoom < 16
 
-        if (10 < zoom < 12) {
+        if (10 <= zoom && zoom < 12) {
             nextZoom = 13;
             type = 'circle';
-        } else if (12 < zoom < 14) {
+        } else if (12 <= zoom && zoom < 14) {
             nextZoom = 15;
+            type = 'circle';
+        } else if (14 <= zoom && zoom < 16) {
             type = 'rect';
         }
 
@@ -155,9 +157,11 @@ export default class Map extends Component {
         let labelPoint = new window.BMap.Point(longitude, latitude);
 
         if (type === 'circle') {
+            console.log('circle');
             this.createCircle(labelPoint, name, count, value, nextZoom);
         } else {
             // 渲染方形覆盖物
+            console.log('rect');
             this.createRect(labelPoint, name, count, value);
         }
 
@@ -211,17 +215,29 @@ export default class Map extends Component {
         // 创建文本标注对象
         let label = new window.BMap.Label('', opts);
         // 自定义文本标注样式
-        label.setStyle(labelStyle);
+        label.setStyle({
+            width: '120px',
+            height: '20px',
+            display: 'inline-block',
+            backgroundColor: '#0cb56ae6',
+            color: '#fff',
+            fontSize: '12px',
+            border: '1px solid #fff',
+            textAlign: 'center',
+            lineHeight: '20px',
+            fontFamily: '微软雅黑'
+        });
 
         // 添加覆盖物内部html标签
         label.setContent(`
-            <p class="${styles.name}">${name}</p>
-            <p class="${styles.count}">${count}套</p>
+            <span class="${styles.rectName}">${name}</span>
+            <span class="${styles.rectCount}">${count}套</span>
         `);
 
 
         label.addEventListener('click', () => {
             //被点击了
+            console.log('方形 覆盖物被点击了！')
         });
 
         this.map.addOverlay(label);
