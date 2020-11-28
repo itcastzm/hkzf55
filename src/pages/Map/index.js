@@ -51,15 +51,22 @@ export default class Map extends Component {
                 var label = new window.BMap.Label('你好', opts);
                 // 自定义文本标注样式
                 label.setStyle({
-                    color: 'red',
-                    borderRadius: '5px',
-                    borderColor: '#ccc',
-                    padding: '10px',
-                    fontSize: '16px',
-                    height: '30px',
+                    width: '70px',
+                    height: '70px',
+                    display: 'inline-block',
+                    borderRadius: '50%',
+                    backgroundColor: '#0cb56ae6',
+                    color: '#fff',
+                    fontSize: '12px',
+                    border: '1px solid #fff',
+                    textAlign: 'center',
                     lineHeight: '30px',
                     fontFamily: '微软雅黑'
                 });
+
+                // 添加覆盖物内部html标签
+                label.setContent(`<p>浦东</p><p>436套</p>`);
+
                 map.addOverlay(label);
             }
         }, label);
