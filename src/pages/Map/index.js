@@ -7,6 +7,8 @@ import NavHeader from '../../components/NavHeader';
 import axios from 'axios';
 
 import { getCurrentCity } from '../../utils'
+
+import  { Flex } from 'antd-mobile'
 // import './index.scss';
 
 import styles from './index.module.css';
@@ -207,6 +209,9 @@ export default class Map extends Component {
     }
 
     render() {
+
+        const { houselist } = this.state;
+
         return (
             <div className={styles.mapWrapper}  >
 
@@ -216,14 +221,29 @@ export default class Map extends Component {
 
                 </div>
 
-                <div  className="housearea">
-                    <div className="title">
-                        <h3>房源列表</h3>
-                        <div className="more">更多房源</div>
+                {/* <div className={`${styles.housearea} ${houselist.length ? styles.show : ''}`}> */}
+                <div className={[styles.housearea, houselist.length ? styles.show : ''].join(' ')}>
+                    <div className={styles.title}>
+                        <h3 className={styles.titlelist}>房源列表</h3>
+                        <div className={styles.more}>更多房源</div>
                     </div>
+                    <div className={styles.houselist}>
+                        {
+                            houselist.map((item, index) => (
+                                <Flex key={item.houseCode} className={styles.hosueItem}>
+                                    <div className={styles.itemImg}>
+                                        <img src={`http://localhost:8080${item.houseImg}`} alt="图片" />
+                                    </div>
+                                    <div className={styles.itemRight}>
+                                        <div className={styles.itemTitle}>{item.title}</div>
+                                        <div className={styles.desc}>{item.desc}</div>
+                                        <div className={styles.tags}>{item.tags.join(',')}</div>
+                                        <div className={styles.price}>{item.price}元/月</div>
+                                    </div>
+                                </Flex>
 
-                    <div className="houselist">
-                            {/* {this.state.houselist.map()} */}
+                            ))
+                        }
                     </div>
                 </div>
             </div>

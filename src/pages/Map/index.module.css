@@ -17,10 +17,10 @@
 }
 
 
-.traingle{
+.traingle {
     width: 0;
     height: 0;
-    border-color: #0cb56ae6  transparent  transparent  transparent;
+    border-color: #0cb56ae6 transparent transparent transparent;
     border-width: 5px;
     border-style: solid;
 
@@ -43,3 +43,69 @@
     display: inline-block;
     width: 20px;
 }
+
+/* 房源列表 */
+.housearea {
+    position: fixed;
+    height: 330px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    transform: translateY(330px);
+    transition: all 1s;
+}
+
+.show {
+    transform: translateY(0px);
+}
+
+.title {
+    position: relative;
+    height: 40px;
+    background-color: #c0c0c2;
+}
+
+.titlelist {
+    color: #1e1e1e;
+    font-size: 16px;
+    padding-left: 10px;
+    line-height: 40px;
+}
+
+.more {
+    /* float: right; */
+    position: absolute;
+    right: 10px;
+    top: 10px
+    /* margin-right: 10px; */
+}
+
+.houselist {
+    padding-left: 10px;
+}
+
+.hosueItem {
+    height: 90px;
+}
+
+.itemImg {
+    width: 100px;
+
+}
+
+.itemImg :global(img) {
+    width: 100px;
+}
+
+.itemRight {
+    padding-left: 10px;
+}
+
+.itemTitle {}
+
+.desc {}
+
+.tags {}
+
+.price {}
