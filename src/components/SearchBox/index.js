@@ -1,17 +1,17 @@
 import React from 'react'
 import { Flex } from 'antd-mobile'
 
-import styles from './index.module.scss';
+import './index.scss';
 
-export default function SearchBox() {
+export default function SearchBox({ className }) {
     return (
-        <Flex className={styles.searchBoxComp}>
-            <Flex className={styles.search}>
-                <div className={styles.location} onClick={()=> console.log()}>
-                    { '上海'}
+        <Flex className={`search-box ${className ? className : ''}`}>
+            <Flex className="search">
+                <div className="location" onClick={() => console.log()}>
+                    {'上海'}
                     <i className="iconfont icon-arrow"></i>
                 </div>
-                <div className={styles.form}>
+                <div className="form">
                     <i className="iconfont icon-seach"></i>
                     <span>请输入小区或地址</span>
                 </div>

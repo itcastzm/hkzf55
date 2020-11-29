@@ -1,8 +1,8 @@
-.searchBoxComp {
-    // position: absolute;
-    // top: 45px;
-    // width: 100%;
-    // padding: 0 10px;
+.search-box {
+    position: absolute;
+    top: 45px;
+    width: 100%;
+    padding: 0 10px;
 
     width: 100%;
 
@@ -15,7 +15,7 @@
         background-color: #fff;
 
         .location {
-            :global(.icon-arrow) {
+            .icon-arrow {
                 margin-left: 2px;
                 font-size: 12px;
                 color: #7f7f80;
@@ -27,7 +27,7 @@
             margin-left: 12px;
             line-height: 16px;
 
-            :global(.icon-seach) {
+            .icon-seach {
                 vertical-align: middle;
                 padding: 0 2px 0 12px;
                 color: #9c9fa1;
@@ -42,7 +42,7 @@
         }
     }
 
-    :global(.icon-map) {
+    .icon-map {
         font-size: 25px;
         color: #fff;
     }

@@ -1,20 +1,19 @@
 import React, { Component } from 'react'
 
 import SearchBox from '../../components/SearchBox';
-import { Flex} from 'antd-mobile'
+import { Flex } from 'antd-mobile'
 
-import  styles from './index.module.scss';
+import styles from './index.module.scss';
 
 export default class HouseList extends Component {
     render() {
         return (
-            <div  className={styles.houselistWrapper}>
+            <div className={styles.houselistWrapper}>
 
-                <Flex>
-                    <SearchBox  />
+                <Flex className={styles.header}>
+                    <i className="iconfont  icon-back"></i>
+                    <SearchBox className={styles.search} />
                 </Flex>
-
-
                 找房
             </div>
         )
