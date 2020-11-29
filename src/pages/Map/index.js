@@ -8,10 +8,10 @@ import axios from 'axios';
 
 import { getCurrentCity } from '../../utils'
 
-import  { Flex } from 'antd-mobile'
+import { Flex } from 'antd-mobile'
 // import './index.scss';
 
-import styles from './index.module.css';
+import styles from './index.module.scss';
 
 
 const labelStyle = {
@@ -42,7 +42,22 @@ export default class Map extends Component {
         const { label, value } = await getCurrentCity();
 
         var map = new window.BMap.Map("container");
+
         this.map = map;
+
+
+        // 监听地图移动事件
+        map.addEventListener('dragstart', () => {
+
+            if (this.state.houselist.length) {
+                // console.log('dragstart => houselist')
+                this.setState({
+                    houselist: []
+                });
+            }
+
+
+        });
 
         // 创建地址解析器实例     
         var myGeo = new window.BMap.Geocoder();
@@ -58,6 +73,7 @@ export default class Map extends Component {
                 this.renderOverlays(value);
             }
         }, label);
+
     }
 
     // 请求数据 并渲染覆盖物
@@ -107,11 +123,11 @@ export default class Map extends Component {
         let labelPoint = new window.BMap.Point(longitude, latitude);
 
         if (type === 'circle') {
-            console.log('circle');
+            // console.log('circle');
             this.createCircle(labelPoint, name, count, value, nextZoom);
         } else {
             // 渲染方形覆盖物
-            console.log('rect');
+            // console.log('rect');
             this.createRect(labelPoint, name, count, value);
         }
 
