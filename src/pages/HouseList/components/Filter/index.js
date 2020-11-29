@@ -35,6 +35,19 @@ export default class Filter extends Component {
     });
   }
 
+
+  onCancel = () => {
+    this.setState({
+      openType: ''
+    })
+  }
+
+  onSave = () => {
+    this.setState({
+      openType: ''
+    })
+  }
+
   render() {
 
     const { openType } = this.state;
@@ -44,7 +57,7 @@ export default class Filter extends Component {
         {/* 前三个菜单的遮罩层 */}
 
         {  openType === 'area' || openType === 'mode'
-          || openType === 'price' ? <div className={styles.mask} /> : null}
+          || openType === 'price' ? <div className={styles.mask} onClick={this.onCancel} /> : null}
 
         <div className={styles.content}>
           {/* 标题栏 */}
@@ -52,8 +65,10 @@ export default class Filter extends Component {
 
           {/* 前三个菜单对应的内容： */}
           {/* <FilterPicker /> */}
-          {  openType === 'area' || openType === 'mode'
-          || openType === 'price' ?  <FilterPicker /> : null}
+          {openType === 'area' || openType === 'mode'
+            || openType === 'price' ? <FilterPicker
+              onCancel={this.onCancel}
+              onSave={this.onSave} /> : null}
 
           {/* 最后一个菜单对应的内容： */}
           {/* <FilterMore /> */}
