@@ -4,7 +4,9 @@ import React, { Component } from 'react'
 // 导入NavHeader组件
 import NavHeader from '../../components/NavHeader';
 
-import axios from 'axios';
+// import axios from 'axios';
+
+import API  from '../../utils/api';
 
 import { getCurrentCity } from '../../utils'
 
@@ -64,6 +66,7 @@ export default class Map extends Component {
         // 将地址解析结果显示在地图上，并调整地图视野    
         myGeo.getPoint(label, (point) => {
             if (point) {
+                // 3 ~ 19
                 map.centerAndZoom(point, 11);
 
                 // 添加地图控件
@@ -82,7 +85,8 @@ export default class Map extends Component {
 
         // 开启loading
         Toast.loading('加载中...', 0, null, true);
-        const res = await axios.get(`http://localhost:8080/area/map?id=${id}`);
+
+        const res = await API.get(`/area/map?id=${id}`);
 
         // 清除loading
         Toast.hide();
@@ -236,7 +240,7 @@ export default class Map extends Component {
 
         // 开启loading
         Toast.loading('加载中...', 0, null, true);
-        const res = await axios.get(`http://localhost:8080/houses?cityId=${id}`);
+        const res = await API.get(`/houses?cityId=${id}`);
 
         // 清除loading
         Toast.hide();
