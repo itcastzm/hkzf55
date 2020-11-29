@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { Carousel, Flex, Grid, WingBlank } from 'antd-mobile';
 
-import axios from 'axios';
+// import axios from 'axios';
+import  API  from '../../utils/api';
+import  BASE_URL from '../../utils/url';
 
 import Nav1 from '../../assets/images/nav-1.png';
 import Nav2 from '../../assets/images/nav-2.png';
@@ -60,7 +62,7 @@ export default class Index extends Component {
 
     // 获取轮播图数据
     async getSwipers() {
-        const res = await axios.get(`http://localhost:8080/home/swiper`);
+        const res = await API.get(`/home/swiper`);
 
         this.setState({
             swipers: res.data.body
@@ -69,7 +71,7 @@ export default class Index extends Component {
 
     // 获取租房小组数据
     async getGroups() {
-        const res = await axios.get(`http://localhost:8080/home/groups`, {
+        const res = await API.get(`/home/groups`, {
             params: {
                 area: 'AREA%7C88cff55c-aaa4-e2e0'
             }
@@ -82,7 +84,7 @@ export default class Index extends Component {
 
     // 获取最新资讯数据
     async getNews() {
-        const res = await axios.get(`http://localhost:8080/home/news`, {
+        const res = await API.get(`/home/news`, {
             params: {
                 area: 'AREA%7C88cff55c-aaa4-e2e0'
             }
@@ -110,7 +112,7 @@ export default class Index extends Component {
                         style={{ display: 'inline-block', width: '100%', height: 212 }}
                     >
                         <img
-                            src={`http://localhost:8080${val.imgSrc}`}
+                            src={`${BASE_URL}${val.imgSrc}`}
                             alt=""
                             style={{ width: '100%', verticalAlign: 'top' }}
                         />
@@ -132,7 +134,7 @@ export default class Index extends Component {
                     <p className="title">{item.title}</p>
                     <span className="info">{item.desc}</span>
                 </Flex.Item>
-                <img src={`http://localhost:8080${item.imgSrc}`} />
+                <img src={`${BASE_URL}${item.imgSrc}`} />
             </Flex>
         );
     }
@@ -142,7 +144,7 @@ export default class Index extends Component {
         return (
             <Flex className="news-item">
                 <div className="img-wrap">
-                    <img src={`http://localhost:8080${item.imgSrc}`} alt="" />
+                    <img src={`${BASE_URL}${item.imgSrc}`} alt="" />
                 </div>
                 <Flex className="desc" justify="between" direction="column" align="stretch">
                     <h3> {item.title}</h3>
