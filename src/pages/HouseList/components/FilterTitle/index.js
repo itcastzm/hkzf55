@@ -22,7 +22,6 @@ export default function FilterTitle({ titleSelectedStatus, onClick }) {
 
         return (
           <Flex.Item key={item.type} onClick={() => {
-
             onClick(item.type);
           }}>
             {/* 选中类名： selected */}

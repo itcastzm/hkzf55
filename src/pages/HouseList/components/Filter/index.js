@@ -22,7 +22,6 @@ export default class Filter extends Component {
 
   onTitleClick = (type) => {
     //  type area   mode   price   more 
-    console.log(type);
     this.setState({
 
       titleSelectedStatus: {
