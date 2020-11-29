@@ -202,13 +202,22 @@ export default class Map extends Component {
         `);
 
 
-        label.addEventListener('click', () => {
+        label.addEventListener('click', (e) => {
             //被点击了
             // 1. 根据地区id请求房源数据
             this.getHouseList(id);
             // 2. 将被点击的位置 移动到地图中央
+            // 2.1 获取当前被点击元素的坐标
+            const { clientX, clientY } = e.changedTouches[0];
+
+            // console.log(e, 'e', clientX, clientY);
+
+            // console.log(window.innerWidth / 2 - clientX, (window.innerHeight - 330) / 2 - clientY);
+
+            this.map.panBy(window.innerWidth / 2 - clientX, (window.innerHeight - 330) / 2 - clientY);
+
             // 3 渲染房源列表
-            console.log('方形 覆盖物被点击了！')
+            // console.log('方形 覆盖物被点击了！')
         });
 
         this.map.addOverlay(label);
@@ -253,7 +262,10 @@ export default class Map extends Component {
                                     <div className={styles.itemRight}>
                                         <div className={styles.itemTitle}>{item.title}</div>
                                         <div className={styles.desc}>{item.desc}</div>
-                                        <div className={styles.tags}>{item.tags.join(',')}</div>
+                                        {/* <div className={styles.tags}>{item.tags.join(',')}</div> */}
+                                        <div className={styles.tags}>{item.tags.map((tag, index) => (
+                                            <span key={index} className={styles[`tag${index + 1}`]}>{tag}</span>
+                                        ))}</div>
                                         <div className={styles.price}>{item.price}元/月</div>
                                     </div>
                                 </Flex>
