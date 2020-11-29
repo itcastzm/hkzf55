@@ -8,7 +8,7 @@ import axios from 'axios';
 
 import { getCurrentCity } from '../../utils'
 
-import { Flex } from 'antd-mobile'
+import { Flex, Toast } from 'antd-mobile'
 // import './index.scss';
 
 import styles from './index.module.scss';
@@ -78,7 +78,15 @@ export default class Map extends Component {
 
     // 请求数据 并渲染覆盖物
     async renderOverlays(id) {
+
+
+        // 开启loading
+        Toast.loading('加载中...', 0, null, true);
         const res = await axios.get(`http://localhost:8080/area/map?id=${id}`);
+
+        // 清除loading
+        Toast.hide();
+
 
         const { nextZoom, type } = this.getTypeAndNextZoom();
 
@@ -225,7 +233,13 @@ export default class Map extends Component {
 
 
     async getHouseList(id) {
+
+        // 开启loading
+        Toast.loading('加载中...', 0, null, true);
         const res = await axios.get(`http://localhost:8080/houses?cityId=${id}`);
+
+        // 清除loading
+        Toast.hide();
         // 将数据存储到state当中
         // console.log(res.data.body);
         this.setState({
