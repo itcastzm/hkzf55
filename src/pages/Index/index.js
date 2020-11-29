@@ -2,13 +2,16 @@ import React, { Component } from 'react'
 import { Carousel, Flex, Grid, WingBlank } from 'antd-mobile';
 
 // import axios from 'axios';
-import  API  from '../../utils/api';
-import  BASE_URL from '../../utils/url';
+import API from '../../utils/api';
+import BASE_URL from '../../utils/url';
 
 import Nav1 from '../../assets/images/nav-1.png';
 import Nav2 from '../../assets/images/nav-2.png';
 import Nav3 from '../../assets/images/nav-3.png';
 import Nav4 from '../../assets/images/nav-4.png';
+
+// 引入SearchBox组件
+import SearchBox from '../../components/SearchBox';
 
 // 引入样式
 import './index.scss';
@@ -37,7 +40,7 @@ export default class Index extends Component {
         groups: [],
         news: [],
         imgHeight: 212,
-        cityInfo: null
+        cityInfo: {}
     }
 
     async componentDidMount() {
@@ -157,11 +160,6 @@ export default class Index extends Component {
         )
     }
 
-    // 城市信息点击事件
-    handleCityList = () => {
-        this.props.history.push('/citylist');
-    }
-
     render() {
 
         const { cityInfo } = this.state;
@@ -171,24 +169,10 @@ export default class Index extends Component {
 
                 {/* 轮播图区域 */}
                 <div className="swipers">
-
+                    {/* 轮播图 */}
                     {this.renderSwipers()}
-
-                    <Flex className="search-box">
-                        <Flex className="search">
-                            <div className="location" onClick={this.handleCityList}>
-                                {cityInfo ? cityInfo.label : '上海'}
-                                <i className="iconfont icon-arrow"></i>
-                            </div>
-                            <div className="form">
-                                <i className="iconfont icon-seach"></i>
-                                <span>请输入小区或地址</span>
-                            </div>
-                        </Flex>
-                        <i className="iconfont  icon-map"
-                            onClick={() => this.props.history.push('/map')}></i>
-                    </Flex>
-
+                    {/* 搜索框 */}
+                    <SearchBox cityName={cityInfo.label || '上海'} />
                 </div>
 
                 {/* 导航 */}
