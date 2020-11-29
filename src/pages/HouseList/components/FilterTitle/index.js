@@ -12,7 +12,6 @@ const titleList = [
   { title: '筛选', type: 'more' }
 ]
 
-
 export default function FilterTitle({ titleSelectedStatus, onClick }) {
   return (
     <Flex align="center" className={styles.root}>
