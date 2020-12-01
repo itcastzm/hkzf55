@@ -8,7 +8,7 @@ import styles from './index.module.css'
 
 import API from '../../../../utils/api';
 
-import { getCurrentCity }  from '../../../../utils';
+import { getCurrentCity } from '../../../../utils';
 
 
 const titleSelectedStatus = {
@@ -32,18 +32,18 @@ export default class Filter extends Component {
     this.getFilterData();
   }
 
-async  getFilterData() {
+  async getFilterData() {
 
- const { value} = await getCurrentCity();
+    const { value } = await getCurrentCity();
 
-  const res = await API.get(`http://localhost:8080/houses/condition?id=${value}`);
+    const res = await API.get(`/houses/condition?id=${value}`);
 
-  this.setState({
-    filterData: res.data.body
-  });
+    this.setState({
+      filterData: res.data.body
+    });
 
 
-}
+  }
 
 
   onTitleClick = (type) => {
@@ -72,6 +72,42 @@ async  getFilterData() {
     })
   }
 
+  renderFilterPicker() {
+
+    const { openType, filterData: {
+      area, subway, rentType, price
+    } } = this.state;
+
+    if (openType !== 'area' && openType !== 'mode' && openType !== 'price') {
+      return null;
+    }
+
+
+    let data = [];
+    let cols = 3;
+
+    switch (openType) {
+      case 'area':
+        data = [area, subway];
+        break;
+      case 'mode':
+        data = rentType;
+        cols = 1;
+        break;
+      case 'price':
+        data = price;
+        cols = 1;
+        break;
+      default:
+        break;
+    }
+
+
+    return <FilterPicker data={data} cols={cols} onCancel={this.onCancel} onSave={this.onSave} />
+
+
+  }
+
   render() {
 
     const { openType } = this.state;
@@ -89,10 +125,8 @@ async  getFilterData() {
 
           {/* 前三个菜单对应的内容： */}
           {/* <FilterPicker /> */}
-          {openType === 'area' || openType === 'mode'
-            || openType === 'price' ? <FilterPicker
-              onCancel={this.onCancel}
-              onSave={this.onSave} /> : null}
+
+          {this.renderFilterPicker()}
 
           {/* 最后一个菜单对应的内容： */}
           {/* <FilterMore /> */}
