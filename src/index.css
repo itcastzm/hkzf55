@@ -18,7 +18,7 @@ ul {
 h2,
 h3,
 p,
-body {
+body,dd {
     padding: 0;
     margin: 0;
 }

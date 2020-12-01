@@ -20,8 +20,8 @@ const titleSelectedStatus = {
 
 const selectedValues = {
   area: ['area', null],
-  mode: [null],
-  price: [null],
+  mode: ['null'],
+  price: ['null'],
   more: null
 }
 
@@ -85,6 +85,7 @@ export default class Filter extends Component {
     Object.keys(titleSelectedStatus).forEach((key) => {
 
       if (type === key) {
+        // console.log(type)
         newTitleSelectedStatus[type] = true;
         return;
       }
@@ -92,15 +93,15 @@ export default class Filter extends Component {
       let selectedVal = selectedValues[key];
 
       if (key === 'area' && (selectedVal.length !== 2 || selectedVal[0] !== 'area')) {
-        newTitleSelectedStatus[type] = true;
+        newTitleSelectedStatus[key] = true;
       } else if (key === 'mode' && (selectedVal[0] !== 'null')) {
-        newTitleSelectedStatus[type] = true;
+        newTitleSelectedStatus[key] = true;
       } else if (key === 'price' && (selectedVal[0] !== 'null')) {
-        newTitleSelectedStatus[type] = true;
+        newTitleSelectedStatus[key] = true;
       } else if (key === 'more') {
         //TODO
       } else {
-        newTitleSelectedStatus[type] = false;
+        newTitleSelectedStatus[key] = false;
       }
 
     })
@@ -171,6 +172,19 @@ export default class Filter extends Component {
 
   }
 
+  renderFilterMore() {
+    const { openType, filterData: {
+      roomType, oriented, floor, characteristic
+    } } = this.state;
+
+    if (openType !== 'more') {
+      return null;
+    }
+
+    return <FilterMore roomType={roomType} oriented={oriented} floor={floor} characteristic={characteristic} />
+
+  }
+
   render() {
 
     const { openType } = this.state;
@@ -192,7 +206,7 @@ export default class Filter extends Component {
           {this.renderFilterPicker()}
 
           {/* 最后一个菜单对应的内容： */}
-          {/* <FilterMore /> */}
+          {this.renderFilterMore()}
         </div>
       </div>
     )
