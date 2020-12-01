@@ -22,7 +22,7 @@ const selectedValues = {
   area: ['area', null],
   mode: ['null'],
   price: ['null'],
-  more: null
+  more: []
 }
 
 export default class Filter extends Component {
@@ -175,13 +175,22 @@ export default class Filter extends Component {
   renderFilterMore() {
     const { openType, filterData: {
       roomType, oriented, floor, characteristic
-    } } = this.state;
+    }, selectedValues } = this.state;
 
     if (openType !== 'more') {
       return null;
     }
 
-    return <FilterMore roomType={roomType} oriented={oriented} floor={floor} characteristic={characteristic} />
+    let defaultValue = selectedValues.more
+
+    return <FilterMore roomType={roomType} oriented={oriented}
+      floor={floor} characteristic={characteristic}
+      onCancel={this.onCancel}
+      onSave={this.onSave}
+
+      defaultValue={defaultValue}
+
+    />
 
   }
 
