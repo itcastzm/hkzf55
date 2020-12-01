@@ -86,7 +86,7 @@ export default class Filter extends Component {
 
       if (type === key) {
         // console.log(type)
-        newTitleSelectedStatus[type] = true;
+        newTitleSelectedStatus[key] = true;
         return;
       }
 

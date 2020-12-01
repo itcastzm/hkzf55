@@ -10,4 +10,5 @@
 .home .am-tab-bar-bar {
     position: fixed;
     bottom: 0;
+    /* z-index: 1; */
 }

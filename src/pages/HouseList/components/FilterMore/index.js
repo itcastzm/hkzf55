@@ -7,11 +7,14 @@ import styles from './index.module.css'
 export default class FilterMore extends Component {
   // 渲染标签
   renderFilters(list) {
-    // 高亮类名： styles.tagActive
-    return list.map((item, i) => (<span  key={item.value}  className={[styles.tag, styles.tagActive].join(' ')}>{item.label}</span>))
+    // 高亮类名： styles.tagActive  styles.tagActive
+    return list.map((item, i) => (<span key={item.value}
+      className={[styles.tag, ].join(' ')}
+    >{item.label}</span>))
   }
 
   render() {
+
     const { roomType, oriented, floor, characteristic } = this.props;
 
 
