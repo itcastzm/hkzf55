@@ -6,6 +6,10 @@ import FilterMore from '../FilterMore'
 
 import styles from './index.module.css'
 
+import API from '../../../../utils/api';
+
+import { getCurrentCity }  from '../../../../utils';
+
 
 const titleSelectedStatus = {
   area: false,
@@ -19,8 +23,28 @@ export default class Filter extends Component {
   state = {
     titleSelectedStatus,
     // 打开类型
-    openType: ''
+    openType: '',
+    filterData: {}
   }
+
+
+  componentDidMount() {
+    this.getFilterData();
+  }
+
+async  getFilterData() {
+
+ const { value} = await getCurrentCity();
+
+  const res = await API.get(`http://localhost:8080/houses/condition?id=${value}`);
+
+  this.setState({
+    filterData: res.data.body
+  });
+
+
+}
+
 
   onTitleClick = (type) => {
     //  type area   mode   price   more 

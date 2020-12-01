@@ -13,6 +13,7 @@ const titleList = [
 ]
 
 export default function FilterTitle({ titleSelectedStatus, onClick }) {
+// export default function FilterTitle(props) {
   return (
     <Flex align="center" className={styles.root}>
       {  titleList.map((item) => {
