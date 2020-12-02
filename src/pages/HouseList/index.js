@@ -77,6 +77,14 @@ export default class HouseList extends Component {
         const { list } = this.state;
         const item = list[index];
 
+        if (!item) {
+            return (
+                <div className={styles.loading}>
+                    <p>加载中...</p>
+                </div>
+            )
+        }
+
         return <HouseItem
             key={item.houseCode}
             src={`${BASE_URL}${item.houseImg}`}
@@ -106,6 +114,7 @@ export default class HouseList extends Component {
                             <AutoSizer>
                                 {({ width }) => (
                                     <List
+                                        autoHeight
                                         ref={registerChild}
                                         width={width}
                                         height={height}
