@@ -6,7 +6,7 @@ import { Flex } from 'antd-mobile';
 import { getCurrentCity } from '../../utils';
 
 
-import { List } from 'react-virtualized';
+import { List, AutoSizer, WindowScroller } from 'react-virtualized';
 
 import API from '../../utils/api';
 import BASE_URL from '../../utils/url';
@@ -101,16 +101,24 @@ export default class HouseList extends Component {
 
 
                 <div className={styles.houseItems}>
-                    <List
-                        width={300}
-                        height={300}
-                        rowCount={this.state.count}
-                        rowHeight={120}
-                        rowRenderer={this.rowRenderer}
-                    // onRowsRendered={this.onRowsRendered}
-                    // ref={this.listRef}
-                    // scrollToAlignment={'start'}
-                    />
+                    <WindowScroller>
+                        {({ height, isScrolling, registerChild, scrollTop }) => (
+                            <AutoSizer>
+                                {({ width }) => (
+                                    <List
+                                        ref={registerChild}
+                                        width={width}
+                                        height={height}
+                                        rowCount={this.state.count}
+                                        rowHeight={120}
+                                        rowRenderer={this.rowRenderer}
+                                        scrollTop={scrollTop}
+                                        isScrolling={isScrolling}
+                                    />
+                                )}
+                            </AutoSizer>
+                        )}
+                    </WindowScroller>
                 </div>
 
 
