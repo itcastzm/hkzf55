@@ -38,6 +38,8 @@ export default class Filter extends Component {
 
   componentDidMount() {
     this.getFilterData();
+       // 获取到body
+       this.htmlBody = document.body
   }
 
   async getFilterData() {
@@ -79,6 +81,7 @@ export default class Filter extends Component {
     const { titleSelectedStatus, selectedValues } = this.state;
     //  type area   mode   price   more 
     let newTitleSelectedStatus = { ...titleSelectedStatus };
+        // 给 body 添加样式
 
     // Object.keys(titleSelectedStatus) => ['area', 'mode', 'price', 'more']
     // key   area   mode   price   more 
