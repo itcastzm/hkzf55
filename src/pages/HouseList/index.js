@@ -13,6 +13,9 @@ import BASE_URL from '../../utils/url';
 
 import HouseItem from '../../components/HouseItem';
 
+
+import Sticky from '../../components/Sticky';
+
 // 导入FIlter组件
 import Filter from './components/Filter';
 
@@ -79,13 +82,14 @@ export default class HouseList extends Component {
 
         if (!item) {
             return (
-                <div key={key} className={styles.loading}>
-                    <p>加载中...</p>
+                <div key={key} style={style}>
+                    <p className={styles.loading}>加载中...</p>
                 </div>
             )
         }
 
         return <HouseItem
+            style={style}
             key={key}
             src={`${BASE_URL}${item.houseImg}`}
             title={item.title}
@@ -120,12 +124,10 @@ export default class HouseList extends Component {
             }).then((res) => {
 
                 this.setState({
-                    count: res.data.body.count,
+                    // count: res.data.body.count,
                     list: [...this.state.list, ...res.data.body.list]
                 });
-
                 resolve();
-
             })
 
         })
@@ -141,8 +143,9 @@ export default class HouseList extends Component {
                 </Flex>
 
                 {/* 筛选框 */}
-                <Filter onFilter={this.onFilter} />
-
+                <Sticky>
+                    <Filter onFilter={this.onFilter} />
+                </Sticky>
 
                 <div className={styles.houseItems}>
                     <InfiniteLoader
