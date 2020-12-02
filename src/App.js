@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Suspense } from 'react'
 
 
 // 引入antd组件
@@ -8,40 +8,42 @@ import { Button } from 'antd-mobile';
 import { HashRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
 
 // 引入页面组件
-import Home from './pages/Home';
+const Home = React.lazy(() => import('./pages/Home'));
 
 // 导入地图找房页面
-import Map from './pages/Map';
+const Map = React.lazy(() => import('./pages/Map'));
 
-import CityList from './pages/CityList';
+const CityList = React.lazy(() => import('./pages/CityList'));
 
-import HouseDetail from './pages/HouseDetail';
+const HouseDetail = React.lazy(() => import('./pages/HouseDetail'));
 
-import NotFound from './pages/NotFound'
+const NotFound = React.lazy(() => import('./pages/NotFound'))
 
 export default class App extends Component {
   render() {
     return (
-      <Router>
-        {/* Switch 表示内部Route路径 只能匹配一个 */}
-        <Switch>
-          {/* 路由重定向 */}
-          <Route path="/" exact render={() => <Redirect to="/home" />} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Router>
+          {/* Switch 表示内部Route路径 只能匹配一个 */}
+          <Switch>
+            {/* 路由重定向 */}
+            <Route path="/" exact render={() => <Redirect to="/home" />} />
 
-          <Route path="/home" component={Home} />
+            <Route path="/home" component={Home} />
 
-          <Route path="/citylist" component={CityList} />
+            <Route path="/citylist" component={CityList} />
 
-          {/* 房屋详情页 */}
-          <Route path="/housedetail/:id" component={HouseDetail} />
+            {/* 房屋详情页 */}
+            <Route path="/housedetail/:id" component={HouseDetail} />
 
-          <Route path="/map" component={Map} />
+            <Route path="/map" component={Map} />
 
-          <Route path="*" component={NotFound} />
+            <Route path="*" component={NotFound} />
 
-        </Switch>
+          </Switch>
 
-      </Router>
+        </Router>
+      </Suspense>
     )
   }
 }

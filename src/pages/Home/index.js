@@ -8,14 +8,16 @@ import { Route } from 'react-router-dom';
 import { TabBar } from 'antd-mobile';
 
 // 导入子页面组件
+
+// React.lazy(() => import('./OtherComponent'));
 // 小首页
-import Index from '../Index'
+const Index =  React.laze(()=> import('../Index'))
 // 资讯页面
-import News from '../News'
+const News =  React.laze(()=> import('../News'))
 
-import Profile from '../Profile'
+const Profile =  React.laze(()=> import('../Profile'))
 
-import HouseList from '../HouseList';
+const HouseList =  React.laze(()=> import('../HouseList'));
 
 // 引入样式
 import './index.css';
