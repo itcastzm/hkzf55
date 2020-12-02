@@ -6,7 +6,7 @@ import { Flex } from 'antd-mobile';
 import { getCurrentCity } from '../../utils';
 
 
-import { List, AutoSizer, WindowScroller } from 'react-virtualized';
+import { List, AutoSizer, WindowScroller, InfiniteLoader } from 'react-virtualized';
 
 import API from '../../utils/api';
 import BASE_URL from '../../utils/url';
@@ -79,14 +79,14 @@ export default class HouseList extends Component {
 
         if (!item) {
             return (
-                <div className={styles.loading}>
+                <div key={key} className={styles.loading}>
                     <p>加载中...</p>
                 </div>
             )
         }
 
         return <HouseItem
-            key={item.houseCode}
+            key={key}
             src={`${BASE_URL}${item.houseImg}`}
             title={item.title}
             desc={item.desc}
@@ -95,6 +95,42 @@ export default class HouseList extends Component {
             onClick={() => console.log('点击房源！')}
         />;
     }
+
+
+    // InfiniteLoader 判断数据是否加载的函数
+    isRowLoaded = ({ index }) => {
+        return !!this.state.list[index];
+    }
+
+    // InfiniteLoader 加载更多数据的方法
+    loadMoreRows = async ({ startIndex, stopIndex }) => {
+
+        // 获取城市id
+        const cityInfo = await getCurrentCity();
+
+        return new Promise((resolve) => {
+
+            API.get(`/houses`, {
+                params: {
+                    cityId: cityInfo.value,
+                    ...this.filters,
+                    start: startIndex,
+                    end: stopIndex
+                }
+            }).then((res) => {
+
+                this.setState({
+                    count: res.data.body.count,
+                    list: [...this.state.list, ...res.data.body.list]
+                });
+
+                resolve();
+
+            })
+
+        })
+    }
+
 
     render() {
         return (
@@ -109,25 +145,34 @@ export default class HouseList extends Component {
 
 
                 <div className={styles.houseItems}>
-                    <WindowScroller>
-                        {({ height, isScrolling, registerChild, scrollTop }) => (
-                            <AutoSizer>
-                                {({ width }) => (
-                                    <List
-                                        autoHeight
-                                        ref={registerChild}
-                                        width={width}
-                                        height={height}
-                                        rowCount={this.state.count}
-                                        rowHeight={120}
-                                        rowRenderer={this.rowRenderer}
-                                        scrollTop={scrollTop}
-                                        isScrolling={isScrolling}
-                                    />
+                    <InfiniteLoader
+                        isRowLoaded={this.isRowLoaded}
+                        loadMoreRows={this.loadMoreRows}
+                        rowCount={this.state.count}
+                    >
+                        {({ onRowsRendered, registerChild }) => (
+                            <WindowScroller>
+                                {({ height, isScrolling, scrollTop }) => (
+                                    <AutoSizer>
+                                        {({ width }) => (
+                                            <List
+                                                onRowsRendered={onRowsRendered}
+                                                autoHeight
+                                                ref={registerChild}
+                                                width={width}
+                                                height={height}
+                                                rowCount={this.state.count}
+                                                rowHeight={120}
+                                                rowRenderer={this.rowRenderer}
+                                                scrollTop={scrollTop}
+                                                isScrolling={isScrolling}
+                                            />
+                                        )}
+                                    </AutoSizer>
                                 )}
-                            </AutoSizer>
+                            </WindowScroller>
                         )}
-                    </WindowScroller>
+                    </InfiniteLoader>
                 </div>
 
 
