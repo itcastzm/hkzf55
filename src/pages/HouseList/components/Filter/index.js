@@ -296,6 +296,7 @@ export default class Filter extends Component {
         config={{
           duration: 2000
         }}
+        
         from={{ opacity: 0 }} to={{ opacity: isHide ? 0 : 1 }}>
 
         {props => {

@@ -15,6 +15,8 @@ import Map from './pages/Map';
 
 import CityList from './pages/CityList';
 
+import HouseDetail from './pages/HouseDetail';
+
 import NotFound from './pages/NotFound'
 
 export default class App extends Component {
@@ -29,6 +31,9 @@ export default class App extends Component {
           <Route path="/home" component={Home} />
 
           <Route path="/citylist" component={CityList} />
+
+          {/* 房屋详情页 */}
+          <Route path="/housedetail/:id" component={HouseDetail} />
 
           <Route path="/map" component={Map} />
 

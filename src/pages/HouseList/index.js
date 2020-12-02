@@ -118,7 +118,9 @@ export default class HouseList extends Component {
             desc={item.desc}
             tags={item.tags}
             price={item.price}
-            onClick={() => console.log('点击房源！')}
+            onClick={() => {
+                this.props.history.push(`/housedetail/${item.houseCode}`)
+            }}
         />;
     }
 
