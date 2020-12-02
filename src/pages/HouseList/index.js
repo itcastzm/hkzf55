@@ -80,6 +80,7 @@ export default class HouseList extends Component {
         const { list } = this.state;
         const item = list[index];
 
+        // 判断item 是否为空 undefined
         if (!item) {
             return (
                 <div key={key} style={style}>
@@ -91,7 +92,8 @@ export default class HouseList extends Component {
         return <HouseItem
             style={style}
             key={key}
-            src={`${BASE_URL}${item.houseImg}`}
+            // src={`${BASE_URL}${item.houseImg}`}
+            src={BASE_URL + item.houseImg}
             title={item.title}
             desc={item.desc}
             tags={item.tags}
@@ -143,8 +145,8 @@ export default class HouseList extends Component {
                 </Flex>
 
                 {/* 筛选框 */}
-                <Sticky>
-                    <Filter onFilter={this.onFilter} />
+                <Sticky offset={40}>
+                    <Filter onFilter={this.onFilter}  />
                 </Sticky>
 
                 <div className={styles.houseItems}>
