@@ -164,7 +164,6 @@ export default class HouseList extends Component {
             return <NoHouse>没有找到房源，请您换个搜索条件吧~</NoHouse>
         }
 
-
         return <InfiniteLoader
             isRowLoaded={this.isRowLoaded}
             loadMoreRows={this.loadMoreRows}

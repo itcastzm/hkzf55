@@ -10,6 +10,8 @@ import API from '../../../../utils/api';
 
 import { getCurrentCity } from '../../../../utils';
 
+import { Spring } from 'react-spring/renderprops'
+
 
 const titleSelectedStatus = {
   area: false,
@@ -38,8 +40,8 @@ export default class Filter extends Component {
 
   componentDidMount() {
     this.getFilterData();
-       // 获取到body
-       this.htmlBody = document.body
+    // 获取到body
+    this.htmlBody = document.body
   }
 
   async getFilterData() {
@@ -81,7 +83,7 @@ export default class Filter extends Component {
     const { titleSelectedStatus, selectedValues } = this.state;
     //  type area   mode   price   more 
     let newTitleSelectedStatus = { ...titleSelectedStatus };
-        // 给 body 添加样式
+    // 给 body 添加样式
 
     // Object.keys(titleSelectedStatus) => ['area', 'mode', 'price', 'more']
     // key   area   mode   price   more 
@@ -282,16 +284,53 @@ export default class Filter extends Component {
 
   }
 
+
+  renderMask() {
+    const { openType } = this.state;
+
+
+    const isHide = openType === 'more' || openType === ''
+
+    return (
+      <Spring
+        config={{
+          duration: 2000
+        }}
+        from={{ opacity: 0 }} to={{ opacity: isHide ? 0 : 1 }}>
+
+        {props => {
+
+          // console.log('props', props);
+
+          // 说明遮罩层已经完成动画效果，隐藏了
+          if (props.opacity === 0) {
+            return null
+          }
+
+          return (
+            <div
+              style={props}
+              className={styles.mask}
+              onClick={() => this.onCancel(openType)}
+            />
+          )
+        }}
+      </Spring>
+
+    )
+
+
+  }
+
   render() {
 
-    const { openType } = this.state;
+
 
     return (
       <div className={styles.root}>
         {/* 前三个菜单的遮罩层 */}
 
-        {  openType === 'area' || openType === 'mode'
-          || openType === 'price' ? <div className={styles.mask} onClick={this.onCancel} /> : null}
+        {  this.renderMask()}
 
         <div className={styles.content}>
           {/* 标题栏 */}
