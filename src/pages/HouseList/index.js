@@ -5,7 +5,13 @@ import { Flex } from 'antd-mobile';
 
 import { getCurrentCity } from '../../utils';
 
+
+import { List } from 'react-virtualized';
+
 import API from '../../utils/api';
+import BASE_URL from '../../utils/url';
+
+import HouseItem from '../../components/HouseItem';
 
 // 导入FIlter组件
 import Filter from './components/Filter';
@@ -45,7 +51,6 @@ export default class HouseList extends Component {
             }
         });
 
-
         this.setState({
             count: res.data.body.count,
             list: res.data.body.list
@@ -60,6 +65,29 @@ export default class HouseList extends Component {
         this.fetchHouseListData();
     }
 
+
+    rowRenderer = ({
+        key, // Unique key within array of rows
+        index, // Index of row within collection
+        isScrolling, // The List is currently being scrolled
+        isVisible, // This row is visible within the List (eg it is not an overscanned row)
+        style, // Style object to be applied to row (to position it)
+    }) => {
+
+        const { list } = this.state;
+        const item = list[index];
+
+        return <HouseItem
+            key={item.houseCode}
+            src={`${BASE_URL}${item.houseImg}`}
+            title={item.title}
+            desc={item.desc}
+            tags={item.tags}
+            price={item.price}
+            onClick={() => console.log('点击房源！')}
+        />;
+    }
+
     render() {
         return (
             <div className={styles.houselistWrapper}>
@@ -70,6 +98,22 @@ export default class HouseList extends Component {
 
                 {/* 筛选框 */}
                 <Filter onFilter={this.onFilter} />
+
+
+                <div className={styles.houseItems}>
+                    <List
+                        width={300}
+                        height={300}
+                        rowCount={this.state.count}
+                        rowHeight={120}
+                        rowRenderer={this.rowRenderer}
+                    // onRowsRendered={this.onRowsRendered}
+                    // ref={this.listRef}
+                    // scrollToAlignment={'start'}
+                    />
+                </div>
+
+
             </div>
         )
     }
