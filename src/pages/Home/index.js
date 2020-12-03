@@ -7,20 +7,22 @@ import { Route } from 'react-router-dom';
 // 导入TabBar组件
 import { TabBar } from 'antd-mobile';
 
+// 引入样式
+import './index.css';
+
 // 导入子页面组件
 
 // React.lazy(() => import('./OtherComponent'));
 // 小首页
-const Index =  React.laze(()=> import('../Index'))
+const Index =  React.lazy(()=> import('../Index'))
 // 资讯页面
-const News =  React.laze(()=> import('../News'))
+const News =  React.lazy(()=> import('../News'))
 
-const Profile =  React.laze(()=> import('../Profile'))
+const Profile =  React.lazy(()=> import('../Profile'))
 
-const HouseList =  React.laze(()=> import('../HouseList'));
+const HouseList =  React.lazy(()=> import('../HouseList'));
 
-// 引入样式
-import './index.css';
+
 
 const tabBars = [
     { path: '/home', title: '首页', icon: 'icon-ind' },

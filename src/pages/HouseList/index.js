@@ -61,7 +61,7 @@ export default class HouseList extends Component {
                 cityId: cityInfo.value,
                 ...this.filters,
                 start: 1,
-                end: 100
+                end: 20
             }
         });
 
@@ -127,7 +127,9 @@ export default class HouseList extends Component {
 
     // InfiniteLoader 判断数据是否加载的函数
     isRowLoaded = ({ index }) => {
-        return !!this.state.list[index];
+        let rs = !!this.state.list[index];
+        console.log(index, 'isRowLoaded', rs);
+        return rs;
     }
 
     // InfiniteLoader 加载更多数据的方法
@@ -157,7 +159,6 @@ export default class HouseList extends Component {
         })
     }
 
-
     renderHouseList() {
 
         const { isLoading, count } = this.state;
@@ -177,8 +178,8 @@ export default class HouseList extends Component {
                         <AutoSizer>
                             {({ width }) => (
                                 <List
-                                    onRowsRendered={onRowsRendered}
                                     autoHeight
+                                    onRowsRendered={onRowsRendered}
                                     ref={registerChild}
                                     width={width}
                                     height={height}
